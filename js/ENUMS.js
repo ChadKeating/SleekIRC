@@ -1,0 +1,1 @@
+﻿var STATUS = { NOTCONNECTED: 0, CONNECTED: 1 };
