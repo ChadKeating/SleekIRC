@@ -35,10 +35,13 @@
 	};
 
 
-	self.addMessage = function ($html, sender, message) {
+	self.addMessage = function ($html, sender, message, isSelf) {
 		var newMessage = resources.find(".message").clone();
 		newMessage.find(".sender").text(sender + ":");
 		newMessage.find(".text").text(message);
+		if (isSelf) {
+			newMessage.addClass("self");
+		}
 		$html.window.find(".messageHistory").append(newMessage);
 	};
 

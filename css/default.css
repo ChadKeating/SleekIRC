@@ -124,12 +124,12 @@ div {
         background: #FF5454; }
       .mainContainer .chats .chatWindow .messageHistory {
         width: 100%; }
-      .mainContainer .chats .chatWindow .message:nth-child(2n+1) {
-        background: #D3FFA9; }
       .mainContainer .chats .chatWindow .message {
         border: 1px solid black;
         width: 100%;
         height: 100%; }
+        .mainContainer .chats .chatWindow .message.self {
+          background: #D3FFA9; }
         .mainContainer .chats .chatWindow .message .sender {
           width: 100px; }
       .mainContainer .chats .chatWindow .messageBox {

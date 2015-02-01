@@ -72,15 +72,15 @@
 	p.sendMessage = function () {
 		var message = this.$HTML.window.find(".messageBox input").val();
 		Sleek.client.say(this.name, message);
-		this.addMessage(Sleek.profile.name, message);
+		this.addMessage(Sleek.profile.name, message, true);
 	};
 
 	p.receiveMessage = function (sender, message) {
 		this.addMessage(sender, message);
 	};
 
-	p.addMessage = function (sender, message) {
-		UI.addMessage(this.$HTML, sender, message);
+	p.addMessage = function (sender, message, isSelf) {
+		UI.addMessage(this.$HTML, sender, message, isSelf);
 	};
 
 })(Chat.prototype);
