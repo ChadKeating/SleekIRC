@@ -59,8 +59,10 @@
 
 		self.client.addListener('topic', function (channel, topic, nick, message) {
 			var channelPresent = self.getChatByName(channel);
-			channelPresent.changeTopic(topic);
-			channelPresent.updateHeader();
+			if (channelPresent) {
+				channelPresent.changeTopic(topic);
+				channelPresent.updateHeader();
+			}
 		});
 
 		if(self.FLAGS.DEBUG){
