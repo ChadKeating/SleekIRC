@@ -24,21 +24,47 @@ div{
 	.chatlist{
 		width: 160px;
 		height: 100%;
-		background: grey;
+		background: #8e8e8f;
+		color: white;
+		.chatlistHeader{
+			text-align: center;
+			background: #2C3442;
+		}
+
+		.chat:nth-child(2n+1) {  
+			background: #1b1b1b; //First colour
+		};
 		.chat{
 			width: 100%;
 			text-align: center;
 			height: 40px;
-			background: lightblue;
+			background: #444B59; //Second colours
+			&.selected{	
+				font-weight: 700;
+			}
 		}
 	}
 	.users{
 		width: 160px;
 		height: 100%;
-		background: lightgrey;
+		background: #DADADA;
+		.usersHeader{
+			text-align: center;
+		}
+		.user:nth-child(2n+1) {  
+			background: #ebebeb; //First colour
+		};
+		.user{
+			text-align: center;
+			background: #f6f3f3; //Second colours
+			&:hover{
+				background: #FFFFFF;
+			}
+
+		}
 	}
 	.chats{
-	display: flex;
+		display: flex;
 		.chatWindow{
 			display: none;
 			height: 100%;
@@ -46,9 +72,17 @@ div{
 			&.active{
 				display: initial;
 			}
+			.chatHeader{
+				background: #FF5454;
+			}
 			.messageHistory{
 				width: 100%;
 			}
+
+			
+			.message:nth-child(2n+1) {  
+				background: #D3FFA9; //First colour
+			};
 			.message{
 				border: 1px solid black;
 				width: 100%;
@@ -65,10 +99,10 @@ div{
 				bottom: 0;
 				width: 100%;
 				input{
-				margin:0;
-					}
+					margin:0;
+				}
 				button{
-				margin:0;
+					margin:0;
 				}
 			}
 		}

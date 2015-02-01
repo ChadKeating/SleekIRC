@@ -85,16 +85,33 @@ div {
   .mainContainer .chatlist {
     width: 160px;
     height: 100%;
-    background: grey; }
+    background: #8e8e8f;
+    color: white; }
+    .mainContainer .chatlist .chatlistHeader {
+      text-align: center;
+      background: #2C3442; }
+    .mainContainer .chatlist .chat:nth-child(2n+1) {
+      background: #1b1b1b; }
     .mainContainer .chatlist .chat {
       width: 100%;
       text-align: center;
       height: 40px;
-      background: lightblue; }
+      background: #444B59; }
+      .mainContainer .chatlist .chat.selected {
+        font-weight: 700; }
   .mainContainer .users {
     width: 160px;
     height: 100%;
-    background: lightgrey; }
+    background: #DADADA; }
+    .mainContainer .users .usersHeader {
+      text-align: center; }
+    .mainContainer .users .user:nth-child(2n+1) {
+      background: #ebebeb; }
+    .mainContainer .users .user {
+      text-align: center;
+      background: #f6f3f3; }
+      .mainContainer .users .user:hover {
+        background: #FFFFFF; }
   .mainContainer .chats {
     display: flex; }
     .mainContainer .chats .chatWindow {
@@ -103,8 +120,12 @@ div {
       width: 100%; }
       .mainContainer .chats .chatWindow.active {
         display: initial; }
+      .mainContainer .chats .chatWindow .chatHeader {
+        background: #FF5454; }
       .mainContainer .chats .chatWindow .messageHistory {
         width: 100%; }
+      .mainContainer .chats .chatWindow .message:nth-child(2n+1) {
+        background: #D3FFA9; }
       .mainContainer .chats .chatWindow .message {
         border: 1px solid black;
         width: 100%;

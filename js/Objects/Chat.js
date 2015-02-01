@@ -1,13 +1,20 @@
-﻿var Channel = function (name) {
-	this.id = "CHANNEL-".generateId();
-	this.name = name;
-	this.users = [];
+﻿var Chat = function () {
+	this.id = "CHAT-".generateId();
+	this.name;
 	this.history;
 	this.status = STATUS.NOTCONNECTED;
 	this.$HTML = null;
 	this.active = false;
 };
 (function (p) {
+		
+	p.getTitle = function () {
+		return this.name;
+	};
+
+	p.getTopic = function () {
+		return this.id;
+	}
 
 	p.makeActive = function () {
 		this.active = true;
@@ -20,22 +27,17 @@
 		this.$HTML.button.removeClass("selected");
 		this.$HTML.window.removeClass("active");
 	};
-
 	p.isActive = function () {
 		return this.active;
 	};
 
-	p.join = function () {
-		var _this = this;
-		Sleek.client.join(this.name, function () {
-			_this.chatJoined();
-		});
-	};
-
-	p.chatJoined = function () {
+	p.chatJoined = function (focusChat) {
 		this.status = STATUS.CONNECTED;
 		if (this.$HTML == null) {
 			this.setupChat();
+		}
+		if (focusChat) {
+			Sleek.changeChat(this.name);
 		}
 	};
 
@@ -47,6 +49,7 @@
 		};
 		this.$HTML.button = UI.createChatButton(this.name, "channel");
 		this.$HTML.window = UI.createChatWindow();
+		this.updateHeader();
 		this.makeActive();
 
 		this.$HTML.button.click(function () {
@@ -55,13 +58,16 @@
 			}
 		});
 		this.$HTML.window.find(".messageBox button").click(function () {
-				_this.sendMessage()
-			});
-
-		Sleek.client.addListener('message{0}'.format(this.name), function (from, message) {
-			_this.recieveMessage(from, message);
+			_this.sendMessage()
 		});
-	}
+
+	};
+
+	p.updateHeader = function () {
+		var head = this.$HTML.window.find(".chatHeader");
+		head.find(".title").text(this.getTitle());
+		head.find(".topic").text(this.getTopic());
+	};
 
 	p.sendMessage = function () {
 		var message = this.$HTML.window.find(".messageBox input").val();
@@ -69,7 +75,7 @@
 		this.addMessage(Sleek.profile.name, message);
 	};
 
-	p.recieveMessage = function (sender, message) {
+	p.receiveMessage = function (sender, message) {
 		this.addMessage(sender, message);
 	};
 
@@ -77,4 +83,4 @@
 		UI.addMessage(this.$HTML, sender, message);
 	};
 
-})(Channel.prototype);
+})(Chat.prototype);

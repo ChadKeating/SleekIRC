@@ -12,20 +12,29 @@
 
     <script type="text/javascript" src="./js/Sleek.js"></script>
     <script type="text/javascript" src="./js/UI.js"></script>
-    <script type="text/javascript" src="./js/Channel.js"></script>
 
+    <script type="text/javascript" src="./js/Objects/Chat.js"></script>
+    <script type="text/javascript" src="./js/Objects/Channel.js"></script>
+    <script type="text/javascript" src="./js/Objects/Private.js"></script>
 
 </head>
 <body>
     <div class="topBar"></div>
     <div class="mainContainer">
         <div class="chatlist">
+            <div class="chatlistHeader">
+                Chats
+            </div>
             <div class="chatJoin">
                 <input type="text" />
                 <button>Join</button>
             </div>
         </div>
-        <div class="users"></div>
+        <div class="users">
+            <div class="usersHeader">
+                Users
+            </div>
+        </div>
         <div class="chats">
 
         </div>
@@ -37,6 +46,10 @@
             <div class="text"></div>
         </div>
         <div class="chatWindow">
+            <div class="chatHeader">
+                <div class="title"></div>
+                <div class="topic"></div>
+            </div>
             <div class="messageHistory"></div>
             <div class="messageBox">
                 <input type="text" />
