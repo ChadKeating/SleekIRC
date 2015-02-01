@@ -3,12 +3,16 @@
 	var gui = require('nw.gui');
 	var main = null;
 	var resources = null;
+
 	self.window = gui.Window.get();
+
 	self.init = function () {
-		var startingHeight = $(document).height() - $(".topBar").height();// - (gui.App.manifest.window.toolbar ? 32 : 0);
 		main = $(".mainContainer");
 		resources = $(".resources");
-		main.height(startingHeight);
+		
+		setHeightOfMain(main);
+		self.window.on('resize', function () { setHeightOfMain(main); });
+
 		main.find(".chatJoin button").click(function () {
 			var newChannel = new Channel(main.find(".chatJoin input").val());
 			Sleek.channels.push(newChannel);
@@ -20,6 +24,12 @@
 			this.close(true);
 		});
 	};
+
+	function setHeightOfMain($main) {
+		var mainHeight = $(document).height() - $(".topBar").height();// - (gui.App.manifest.window.toolbar ? 32 : 0);
+		$main.height(mainHeight);
+	};
+
 
 	self.addMessage = function ($html, sender, message) {
 		var newMessage = resources.find(".message").clone();
