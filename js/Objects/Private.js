@@ -1,6 +1,7 @@
 ﻿var Private = function (name) {
 	Chat.call(this)
-	this.name = name;	
+	this.name = name;
+	this.type = "PRIVATE";
 };
 (function (p) {
 	p.receiveMessage = function (message) {

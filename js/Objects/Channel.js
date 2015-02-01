@@ -3,6 +3,7 @@
 	this.name = name;
 	this.users = [];
 	this.topic = "";
+	this.type = "CHANNEL";
 };
 (function (p) {
 

@@ -38,7 +38,21 @@
 	self.addMessage = function ($html, sender, message, isSelf) {
 		var newMessage = resources.find(".message").clone();
 		newMessage.find(".sender").text(sender + ":");
-		newMessage.find(".text").text(message);
+
+		var textField = newMessage.find(".text");
+		textField.text(message);
+		textField.linkify({
+			tagName: 'a',
+			target: '_blank',
+			newLine: '\n',
+			linkClass: null,
+			linkAttributes: null
+		});
+		textField.find("a").click(function (e) {
+			e.preventDefault();
+			gui.Shell.openExternal($(e.currentTarget).attr("href"));
+		});
+
 		if (isSelf) {
 			newMessage.addClass("self");
 		}

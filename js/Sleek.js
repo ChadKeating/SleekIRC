@@ -11,6 +11,11 @@
 		leavingMessage: "Goodbye!"
 	};
 
+	self.servers = [{
+		name: "Freenode",
+		address: "irc.freenode.com"
+	}];
+
 	self.chats = [];
 	self.getChatByName = function (name) {
 		return self.chats.first(function (chat) {
@@ -34,7 +39,7 @@
 
 	self.init = function () {
 		UI.init();
-		self.client = new self.irc.Client('irc.freenode.com', self.profile.name, {
+		self.client = new self.irc.Client(self.servers[0].address, self.profile.name, {
 			autoRejoin: false,
 			autoConnect: false,
 			channels: [],
@@ -44,7 +49,7 @@
 			stripColors: false
 		});
 		self.client.addListener('error', function (message) {
-			console.log('error: ', message);
+			console.error(message);
 		});
 		self.client.addListener('pm', function (name, text, message) {
 			var chatPresent = self.getChatByName(name);
@@ -56,7 +61,6 @@
 			chatPresent.receiveMessage(text);
 		});
 		
-
 		self.client.addListener('topic', function (channel, topic, nick, message) {
 			var channelPresent = self.getChatByName(channel);
 			if (channelPresent) {
@@ -80,7 +84,6 @@
 		//return;
 		Sleek.client.disconnect()
 	};
-
 
 })(Sleek);
 $(document).ready(function () {

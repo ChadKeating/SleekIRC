@@ -1,6 +1,7 @@
 ﻿var Chat = function () {
 	this.id = "CHAT-".generateId();
 	this.name;
+	this.type = "CHAT";
 	this.history;
 	this.status = STATUS.NOTCONNECTED;
 	this.$HTML = null;
