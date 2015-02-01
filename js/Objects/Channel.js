@@ -26,6 +26,10 @@
 	p.changeTopic = function (topic) {
 		this.topic = topic;
 		this.updateHeader();
+	};
+
+	p.getTopic = function () {
+		return this.topic;
 	}
 
 })(Channel.prototype = Object.create(Chat.prototype));
