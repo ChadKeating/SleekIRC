@@ -41,7 +41,12 @@
 			$(e.currentTarget).find("i").toggleClass("fa-angle-double-right");
 			chatList.toggleClass("collapsed");
 		});
-
+		var userlist = main.find(".users");
+		userlist.find(".collapseButton").click(function (e) {
+			$(e.currentTarget).find("i").toggleClass("fa-angle-double-left");
+			$(e.currentTarget).find("i").toggleClass("fa-angle-double-right");
+			userlist.toggleClass("collapsed");
+		});
 	
 
 

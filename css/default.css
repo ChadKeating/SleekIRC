@@ -99,6 +99,8 @@ div {
     transition: all 0.1s ease-in-out; }
     .mainContainer .chatlist.collapsed {
       width: 32px; }
+      .mainContainer .chatlist.collapsed .chatJoin {
+        display: none; }
       .mainContainer .chatlist.collapsed .chatlistHeader .info {
         display: none; }
       .mainContainer .chatlist.collapsed .chat span {
@@ -194,6 +196,10 @@ div {
     width: 160px;
     height: 100%;
     background: #E3E3E3; }
+    .mainContainer .users.collapsed {
+      width: 32px; }
+      .mainContainer .users.collapsed .usersHeader .info {
+        display: none; }
     .mainContainer .users .usersHeader {
       text-align: center;
       background: #DADADA;

@@ -47,6 +47,9 @@ div{
 		transition: all 0.1s ease-in-out;
 		&.collapsed{
 			width: 32px;
+			.chatJoin{
+				display: none;
+			}
 			.chatlistHeader{
 				.info{
 					display: none;
@@ -171,6 +174,14 @@ div{
 		width: 160px;
 		height: 100%;
 		background: #E3E3E3;
+		&.collapsed {
+		width: 32px;
+			.usersHeader{
+			.info{
+			display: none;
+			}
+			}
+		}
 		.usersHeader{
 			text-align: center;
 			background: #DADADA;
