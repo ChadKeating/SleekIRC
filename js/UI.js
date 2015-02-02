@@ -83,7 +83,8 @@
 	};
 
 	self.createChatButton = function (chatname, type) {
-		var chatButton = resources.find(".chat").addClass(type);
+		var chatButton = resources.find(".chat").clone()
+			.addClass(type);
 		chatButton.find("span").text(chatname);
 		main.find(".chatlist").append(chatButton);
 		return chatButton;
@@ -102,6 +103,21 @@
 	self.updateServerStatus = function (connected) {
 		var statusText = connected ? "CONNECTED" : "NOT CONNECTED";
 		main.find(".chatlist .status").text(statusText);
+	};
+	self.updateNotifications = function ($html, number) {
+		var button = $html.button;
+
+		if (Sleek.profile.UseMaxNotifications && number >= Sleek.profile.maxNotifications) {
+			button.find(".notifications").text("!");
+		} else {
+			button.find(".notifications").text(number);
+		}
+
+		if (number > 0) {
+			button.addClass("newNotifications");
+		} else {
+			button.removeClass("newNotifications");
+		}
 	};
 
 })(UI);

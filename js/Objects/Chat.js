@@ -6,6 +6,7 @@
 	this.status = STATUS.NOTCONNECTED;
 	this.$HTML = null;
 	this.active = false;
+	this.notifications = 0;
 };
 (function (p) {
 		
@@ -21,12 +22,15 @@
 		this.active = true;
 		this.$HTML.button.addClass("selected");
 		this.$HTML.window.addClass("active");
+		this.notifications = 0;
+		UI.updateNotifications(this.$HTML, this.notifications);
 	};
 
 	p.makeInactive = function () {
 		this.active = false;
 		this.$HTML.button.removeClass("selected");
 		this.$HTML.window.removeClass("active");
+		UI.updateNotifications(this.$HTML, this.notifications);
 	};
 	p.isActive = function () {
 		return this.active;
@@ -40,6 +44,7 @@
 		if (focusChat) {
 			Sleek.changeChat(this.name);
 		}
+		UI.updateNotifications(this.$HTML, this.notifications);
 	};
 
 	p.setupChat = function () {
@@ -86,11 +91,15 @@
 	};
 
 	p.receiveMessage = function (sender, message) {
+		if (!this.isActive()) {
+			this.notifications++;
+		}
 		this.addMessage(sender, message);
 	};
 
 	p.addMessage = function (sender, message, isSelf) {
 		UI.addMessage(this.$HTML, sender, message, isSelf);
+		UI.updateNotifications(this.$HTML, this.notifications);
 	};
 
 })(Chat.prototype);

@@ -8,7 +8,9 @@
 
 	self.profile = {
 		name: 'MR_IRC_TEST',
-		leavingMessage: "Goodbye!"
+		leavingMessage: "Goodbye!",
+		useMaxNotifications: true,
+		maxNotifications: 10
 	};
 
 	self.servers = [{

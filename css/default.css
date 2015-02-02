@@ -158,6 +158,21 @@ div {
       height: 32px;
       background: #444B59;
       line-height: 10px; }
+      .mainContainer .chatlist .chat.newNotifications .notifications {
+        display: initial; }
+      .mainContainer .chatlist .chat .notifications {
+        display: none;
+        position: absolute;
+        border-radius: 50%;
+        width: 13px;
+        height: 13px;
+        text-align: center;
+        top: 1px;
+        right: 1px;
+        background: red;
+        font-size: 10px;
+        font-weight: 100;
+        line-height: 12px; }
       .mainContainer .chatlist .chat span {
         font-size: 16px;
         opacity: 0.3;

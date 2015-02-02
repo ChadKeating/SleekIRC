@@ -14,9 +14,6 @@
 			Sleek.client.addListener('message{0}'.format(_this.name), function (from, message) {
 				_this.receiveMessage(from, message);
 			});
-
-
-
 		});
 	};
 	
