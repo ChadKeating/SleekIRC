@@ -13,7 +13,8 @@
 
 	self.servers = [{
 		name: "Freenode",
-		address: "irc.freenode.com"
+		address: "irc.freenode.com",
+		status: STATUS.NOTCONNECTED
 	}];
 
 	self.chats = [];
@@ -49,7 +50,7 @@
 			stripColors: false
 		});
 		self.client.addListener('error', function (message) {
-			console.error(message);
+			console.log("Error: ", message);
 		});
 		self.client.addListener('pm', function (name, text, message) {
 			var chatPresent = self.getChatByName(name);
@@ -75,7 +76,15 @@
 				console.log(msgOBJ);
 			});
 		}
-		self.client.connect();
+
+		UI.updateServerTitle(self.servers[0].name + ",");
+
+		self.client.connect(function (e,r) {
+			if (e) {
+				self.servers[0].status = STATUS.CONNECTED;
+				UI.updateServerStatus(true);
+			}
+		});
 	};
 
 	self.closeSequence = function () {

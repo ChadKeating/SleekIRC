@@ -9,20 +9,20 @@
 	self.init = function () {
 		main = $(".mainContainer");
 		resources = $(".resources");
-		
+
 		setHeightOfMain(main);
 		self.window.on('resize', function () { setHeightOfMain(main); });
 		self.window.on('unmaximize', function () { setHeightOfMain(main); });
+		var chatList = main.find(".chatlist");
+		var chatJoinButton = chatList.find(".chatJoin button")
 
-		var chatJoinButton = main.find(".chatJoin button")
-
-		main.find(".chatJoin input").on("keypress", function (e) {
+		chatList.find(".chatJoin input").on("keypress", function (e) {
 			if (e.keyCode == 13) {
 				var newChannel = new Channel(main.find(".chatJoin input").val());
 				if (!Sleek.getChatByName(newChannel.name)) {
 					Sleek.chats.push(newChannel);
 					newChannel.join();
-					main.find(".chatJoin input").val("");
+					chatList.find(".chatJoin input").val("");
 				}
 			}
 		});
@@ -35,15 +35,26 @@
 			}
 		});
 
+
+		chatList.find(".collapseButton").click(function (e) {
+			$(e.currentTarget).find("i").toggleClass("fa-angle-double-left");
+			$(e.currentTarget).find("i").toggleClass("fa-angle-double-right");
+			chatList.toggleClass("collapsed");
+		});
+
+	
+
+
 		self.window.on('close', function () {
 			this.hide();
 			Sleek.closeSequence();
 			this.close(true);
 		});
 	};
+	
 
 	function setHeightOfMain($main) {
-		var mainHeight = window.innerHeight - $(".topBar").height(); - (gui.App.manifest.window.toolbar ? 32 : 0);
+		var mainHeight = window.innerHeight - $(".topBar").height(); -(gui.App.manifest.window.toolbar ? 32 : 0);
 		$main.height(mainHeight);
 	};
 
@@ -72,16 +83,25 @@
 	};
 
 	self.createChatButton = function (chatname, type) {
-		var chatButton = $(document.createElement("div")).addClass("chat " + type);
-		chatButton.text(chatname);
+		var chatButton = resources.find(".chat").addClass(type);
+		chatButton.find("span").text(chatname);
 		main.find(".chatlist").append(chatButton);
 		return chatButton;
 	};
 
 	self.createChatWindow = function () {
 		var chatWindow = resources.find(".chatWindow").clone();
-		main.find(".chats").append(chatWindow);	
+		main.find(".chats").append(chatWindow);
 		return chatWindow;
+	};
+
+	self.updateServerTitle = function (title) {
+		main.find(".chatlist .title").text(title);
+	};
+
+	self.updateServerStatus = function (connected) {
+		var statusText = connected ? "CONNECTED" : "NOT CONNECTED";
+		main.find(".chatlist .status").text(statusText);
 	};
 
 })(UI);

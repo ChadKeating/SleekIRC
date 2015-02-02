@@ -5,6 +5,9 @@
     <title>SleekIRC</title>
     <link rel="stylesheet" href="./css/default.css" />
 
+    <link rel="stylesheet" href="./libs/font-awesome-4.3.0/css/font-awesome.min.css" />
+
+
     <script type="text/javascript" src="./libs/jquery-2.1.3.min.js"></script>
     <script type="text/javascript" src="./libs/jquery.linkify.min.js"></script>
 
@@ -24,7 +27,17 @@
     <div class="mainContainer">
         <div class="chatlist">
             <div class="chatlistHeader">
-                Chats
+                <div class="info">
+                    <div class="title"></div>
+                    <div class="status"></div>
+                </div>
+                <div class="collapseButton">
+                    <i class="fa fa-angle-double-left"></i>
+                </div>
+            </div>
+            <div class="chat channel selected">
+                <span>##test</span>
+                <i class="fa fa-envelope"></i>
             </div>
             <div class="chatJoin">
                 <input type="text" />
@@ -33,7 +46,12 @@
         </div>
         <div class="users">
             <div class="usersHeader">
-                Users
+                <div class="info">
+                    <div class="title">Users</div>
+                </div>
+                <div class="collapseButton">
+                    <i class="fa fa-angle-double-left"></i>
+                </div>
             </div>
         </div>
         <div class="chats">
@@ -42,6 +60,10 @@
     </div>
 
     <div class="resources">
+        <div class="chat">
+            <span></span>
+            <i class="fa fa-envelope"></i>
+        </div>
         <div class="message">
             <div class="sender"></div>
             <div class="text"></div>

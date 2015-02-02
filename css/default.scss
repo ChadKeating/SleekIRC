@@ -1,8 +1,26 @@
 ﻿@import "reset";
 
+*:not(input){
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+@mixin selectable{
+	-webkit-touch-callout: all;
+	-webkit-user-select: all;
+	-khtml-user-select: all;
+	-moz-user-select: all;
+	-ms-user-select: all;
+	user-select: all;
+}
+
 html, body{
 	width: 100%;
 	height: 100%;
+	font-family: Arial;
 }
 
 .resources{
@@ -26,20 +44,104 @@ div{
 		height: 100%;
 		background: #8e8e8f;
 		color: white;
+		transition: all 0.1s ease-in-out;
+		&.collapsed{
+			width: 32px;
+			.chatlistHeader{
+				.info{
+					display: none;
+				}
+			}
+			.chat{
+				span{
+					font-size: 0;
+				}
+				i{
+					font-size:20px;
+					opacity: 0.3;
+					position: absolute;
+					margin: auto;
+					left: 0;
+					right: 0;
+					top: 0;
+					bottom: 0;
+					width: 100%;
+					display: table;
+					line-height: 11px;
+				}
+			}
+		}
 		.chatlistHeader{
 			text-align: center;
 			background: #2C3442;
+			height: 100px;
+			.collapseButton{
+				position: relative;
+				height: 100%;
+				width: 32px;
+				float: right;
+				text-align: center;
+				font-size: 32px;
+				background: black;
+				opacity: 0.1;
+				cursor: pointer;
+				&:hover{
+					opacity: 0.2;
+				}
+				i{
+					margin: auto;
+					top: 0;
+					bottom: 0;
+					position: absolute;
+					left: 0;
+					right: 0;
+					display: table;
+					width: 100%;
+				}
+			}
+			.info{
+				float: left;
+				height: 100%;
+				text-align: left;
+				padding: 30px 5px;
+				.title{
+					font-size: 23px;
+				}
+				.status{
+					font-size: 15px;
+				}
+			}
 		}
 
 		.chat:nth-child(2n+1) {  
 			background: #1b1b1b; //First colour
 		};
 		.chat{
+			position: relative;
 			width: 100%;
 			text-align: center;
-			height: 40px;
+			height: 32px;
 			background: #444B59; //Second colours
+			line-height: 10px;
+			span{
+				font-size:16px;
+				opacity: 0.3;
+				position: absolute;
+				margin: auto;
+				left: 0;
+				right: 0;
+				top: 0;
+				bottom: 0;
+				width: 100%;
+				display: table;
+			}
+			i{
+				font-size: 0;
+			}
 			&.selected{	
+				i, span{
+					opacity: 1;
+				}
 				font-weight: 700;
 			}
 		}
@@ -47,9 +149,45 @@ div{
 	.users{
 		width: 160px;
 		height: 100%;
-		background: #DADADA;
+		background: #E3E3E3;
 		.usersHeader{
 			text-align: center;
+			background: #DADADA;
+			height: 100px;
+			.collapseButton{
+				position: relative;
+				height: 100%;
+				width: 32px;
+				float: right;
+				text-align: center;
+				font-size: 32px;
+				background: white;
+				opacity: 0.1;
+				cursor: pointer;
+				&:hover{
+					opacity: 0.2;
+				}
+				i{
+					color: black;
+					margin: auto;
+					top: 0;
+					bottom: 0;
+					position: absolute;
+					left: 0;
+					right: 0;
+					display: table;
+					width: 100%;
+				}
+			}
+			.info{
+				float: left;
+				height: 100%;
+				padding: 30px;
+				line-height: 40px;
+				.title{
+					font-size: 25px;
+				}
+			}
 		}
 		.user:nth-child(2n+1) {  
 			background: #ebebeb; //First colour
@@ -74,25 +212,30 @@ div{
 			}
 			.chatHeader{
 				background: #FF5454;
+				.title{
+					@include selectable;
+				}
+				.topic{
+					@include selectable;
+				}
 			}
 			.messageHistory{
 				width: 100%;
 			}
-
-			
-			
 			.message{
 				border: 1px solid black;
 				width: 100%;
 				height: 100%;
+				@include selectable;
 				&.self{  
-				background: #D3FFA9; //First colour
-			};
+					background: #D3FFA9; //First colour
+				};
 				.sender{
 					width: 100px;
+					@include selectable;
 				}
 				.text{
-					
+					@include selectable;
 				}
 			}
 			.messageBox{
