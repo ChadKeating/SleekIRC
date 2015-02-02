@@ -12,6 +12,7 @@
 		
 		setHeightOfMain(main);
 		self.window.on('resize', function () { setHeightOfMain(main); });
+		self.window.on('unmaximize', function () { setHeightOfMain(main); });
 
 		var chatJoinButton = main.find(".chatJoin button")
 
@@ -42,7 +43,7 @@
 	};
 
 	function setHeightOfMain($main) {
-		var mainHeight = $(document).height() - $(".topBar").height();// - (gui.App.manifest.window.toolbar ? 32 : 0);
+		var mainHeight = window.innerHeight - $(".topBar").height(); - (gui.App.manifest.window.toolbar ? 32 : 0);
 		$main.height(mainHeight);
 	};
 
