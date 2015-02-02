@@ -58,8 +58,16 @@
 				Sleek.changeChat(_this.name);
 			}
 		});
+
+		var inputBox = this.$HTML.window.find(".messageBox input");
+		inputBox.on("keypress", function (e) {
+			if (e.keyCode == 13) {
+				_this.sendMessage();
+			}
+		});
+
 		this.$HTML.window.find(".messageBox button").click(function () {
-			_this.sendMessage()
+			_this.sendMessage();
 		});
 
 	};
@@ -74,6 +82,7 @@
 		var message = this.$HTML.window.find(".messageBox input").val();
 		Sleek.client.say(this.name, message);
 		this.addMessage(Sleek.profile.name, message, true);
+		this.$HTML.window.find(".messageBox input").val("");
 	};
 
 	p.receiveMessage = function (sender, message) {

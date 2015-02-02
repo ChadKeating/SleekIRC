@@ -14,11 +14,23 @@
 		self.window.on('resize', function () { setHeightOfMain(main); });
 
 		var chatJoinButton = main.find(".chatJoin button")
+
+		main.find(".chatJoin input").on("keypress", function (e) {
+			if (e.keyCode == 13) {
+				var newChannel = new Channel(main.find(".chatJoin input").val());
+				if (!Sleek.getChatByName(newChannel.name)) {
+					Sleek.chats.push(newChannel);
+					newChannel.join();
+					main.find(".chatJoin input").val("");
+				}
+			}
+		});
 		chatJoinButton.on("click.joinChannel", function () {
 			var newChannel = new Channel(main.find(".chatJoin input").val());
 			if (!Sleek.getChatByName(newChannel.name)) {
 				Sleek.chats.push(newChannel);
 				newChannel.join();
+				main.find(".chatJoin input").val("");
 			}
 		});
 
@@ -33,7 +45,6 @@
 		var mainHeight = $(document).height() - $(".topBar").height();// - (gui.App.manifest.window.toolbar ? 32 : 0);
 		$main.height(mainHeight);
 	};
-
 
 	self.addMessage = function ($html, sender, message, isSelf) {
 		var newMessage = resources.find(".message").clone();
