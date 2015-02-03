@@ -2,13 +2,15 @@
 (function (self) {
 	self.irc = require('irc');
 
-	self.FLAGS ={
+	self.FLAGS = {
 		DEBUG: true
 	};
-
+	self.date = new Date();
 	self.profile = {
 		name: 'MR_IRC_TEST',
-		leavingMessage: "Goodbye!",
+		leavingMessage: "Goodbye!"
+	};
+	self.settings = {
 		useMaxNotifications: true,
 		maxNotifications: 10
 	};
@@ -40,7 +42,63 @@
 		});
 	};
 
+	/* Database stuff */
+	self.db = null;
+	function setupDatabase() {
+		self.db = new localStorageDB("sleekDB", localStorage);
+		if (self.FLAGS.DEBUG) {
+			self.db.drop();
+			self.db = new localStorageDB("sleekDB", localStorage);
+		}
+		if (self.db.isNew()) {
+			self.db.createTableWithData("settings", [self.settings]);
+			self.db.createTableWithData("servers", self.servers);
+			self.db.createTable("profiles", ["id", "name", "leavingMessage"]);
+			self.db.createTable("channels", ["id", "name", "topic"]);
+			self.db.createTable("privates", ["id", "name"]);
+		}
+	}
+	function resetDatabase(hardreset) {
+		if (hardreset) {
+			self.db.drop();
+			setupDatabase();
+			/*
+			self.db.truncate("settings")
+			self.db.truncate("servers")
+			self.db.truncate("profiles")
+			self.db.truncate("channels")
+			self.db.truncate("privates")
+			*/
+		}
+	}
+	self.setupChatLog = function (chat) {
+		var table = chat.id;
+		if (chat.type == "CHANNEL") {
+			if (!(self.db.query("channels", { name: chat.name }, 1).length > 0)) {
+				self.db.insert("channels", { id: chat.id, name: chat.name, topic: chat.topic });
+			}
+		} else {
+			if (!(self.db.query("privates", { name: chat.name }, 1).length > 0)) {
+				self.db.insert("privates", { id: chat.id, name: chat.name });
+			}
+		}
+		if (!self.db.tableExists(table)) {
+			self.db.createTable(table, ["timestamp", "sender", "message"]);
+		}
+	};
+
+	self.addChatLog = function (chatid, time, sender, message) {
+		self.db.insert(chatid, {
+			timestamp: time,
+			sender: sender,
+			message: message
+		});
+	};
+
+	/*		*/
+
 	self.init = function () {
+		setupDatabase();
 		UI.init();
 		self.client = new self.irc.Client(self.servers[0].address, self.profile.name, {
 			autoRejoin: false,
@@ -63,7 +121,7 @@
 			chatPresent.chatJoined(true);
 			chatPresent.receiveMessage(text);
 		});
-		
+
 		self.client.addListener('topic', function (channel, topic, nick, message) {
 			var channelPresent = self.getChatByName(channel);
 			if (channelPresent) {
@@ -72,7 +130,7 @@
 			}
 		});
 
-		if(self.FLAGS.DEBUG){
+		if (self.FLAGS.DEBUG) {
 			self.client.addListener('message', function (from, to, message, msgOBJ) {
 				console.log('{0} => {1}: {2}'.format(from, to, message));
 				console.log(msgOBJ);
@@ -81,7 +139,7 @@
 
 		UI.updateServerTitle(self.servers[0].name + ",");
 
-		self.client.connect(function (e,r) {
+		self.client.connect(function (e, r) {
 			if (e) {
 				self.servers[0].status = STATUS.CONNECTED;
 				UI.updateServerStatus(true);
@@ -93,7 +151,8 @@
 		//Disconnect all chats
 		//Disconnect server
 		//return;
-		Sleek.client.disconnect()
+		self.client.disconnect();
+		self.db.commit();
 	};
 
 })(Sleek);

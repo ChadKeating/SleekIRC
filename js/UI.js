@@ -7,7 +7,7 @@
 	self.window = gui.Window.get();
 
 	self.init = function () {
-		main = $(".mainContainer");
+		main = $(".programContainer");
 		resources = $(".resources");
 
 		setHeightOfMain(main);
@@ -35,7 +35,6 @@
 			}
 		});
 
-
 		chatList.find(".collapseButton").click(function (e) {
 			$(e.currentTarget).find("i").toggleClass("fa-angle-double-left");
 			$(e.currentTarget).find("i").toggleClass("fa-angle-double-right");
@@ -47,8 +46,6 @@
 			$(e.currentTarget).find("i").toggleClass("fa-angle-double-right");
 			userlist.toggleClass("collapsed");
 		});
-	
-
 
 		self.window.on('close', function () {
 			this.hide();
@@ -56,14 +53,13 @@
 			this.close(true);
 		});
 	};
-	
 
 	function setHeightOfMain($main) {
 		var mainHeight = window.innerHeight - $(".topBar").height(); -(gui.App.manifest.window.toolbar ? 32 : 0);
 		$main.height(mainHeight);
 	};
 
-	self.addMessage = function ($html, sender, message, isSelf) {
+	self.addMessage = function ($html, timestamp, sender, message, isSelf) {
 		var newMessage = resources.find(".message").clone();
 		newMessage.find(".sender").text(sender + ":");
 
@@ -112,7 +108,7 @@
 	self.updateNotifications = function ($html, number) {
 		var button = $html.button;
 
-		if (Sleek.profile.UseMaxNotifications && number >= Sleek.profile.maxNotifications) {
+		if (Sleek.settings.useMaxNotifications && number >= Sleek.settings.maxNotifications) {
 			button.find(".notifications").text("!");
 		} else {
 			button.find(".notifications").text(number);

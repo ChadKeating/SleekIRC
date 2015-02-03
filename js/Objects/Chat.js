@@ -1,5 +1,5 @@
 ﻿var Chat = function () {
-	this.id = "CHAT-".generateId();
+	this.id = "CHAT_".generateId("_");
 	this.name;
 	this.type = "CHAT";
 	this.history;
@@ -39,6 +39,7 @@
 	p.chatJoined = function (focusChat) {
 		this.status = STATUS.CONNECTED;
 		if (this.$HTML == null) {
+			
 			this.setupChat();
 		}
 		if (focusChat) {
@@ -49,6 +50,7 @@
 
 	p.setupChat = function () {
 		var _this = this;
+		Sleek.setupChatLog(_this);
 		this.$HTML = {
 			button: null,
 			window: null
@@ -98,7 +100,9 @@
 	};
 
 	p.addMessage = function (sender, message, isSelf) {
-		UI.addMessage(this.$HTML, sender, message, isSelf);
+		var timestamp = Sleek.date.getTime();
+		Sleek.addChatLog(this.id, timestamp, sender, message)
+		UI.addMessage(this.$HTML, timestamp, sender, message, isSelf);
 		UI.updateNotifications(this.$HTML, this.notifications);
 	};
 

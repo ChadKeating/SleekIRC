@@ -1,4 +1,5 @@
 /* html5doctor.com Reset v1.6.1 - http://cssreset.com */
+@import url(http://fonts.googleapis.com/css?family=Roboto);
 html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary, time, mark, audio, video {
   margin: 0;
   padding: 0;
@@ -74,7 +75,7 @@ input, select {
 html, body {
   width: 100%;
   height: 100%;
-  font-family: Arial; }
+  font-family: 'Roboto', sans-serif; }
 
 .resources {
   display: none; }
@@ -87,217 +88,229 @@ div {
   height: 32px;
   background: black; }
 
-.mainContainer {
+.handleBar {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 25px; }
+  .handleBar .fa {
+    float: right;
+    height: 20px;
+    width: 25px;
+    text-align: center;
+    margin: 2px 2px;
+    font-size: 20px; }
+
+.programContainer {
   width: 100%; }
-  .mainContainer .chatlist, .mainContainer .users {
+  .programContainer .hudController, .programContainer .hudPanel {
     float: left; }
-  .mainContainer .chatlist {
-    width: 160px;
+  .programContainer .hudController {
+    width: 64px;
     height: 100%;
-    background: #8e8e8f;
-    color: white;
-    transition: all 0.1s ease-in-out; }
-    .mainContainer .chatlist.collapsed {
-      width: 32px; }
-      .mainContainer .chatlist.collapsed .chatJoin {
-        display: none; }
-      .mainContainer .chatlist.collapsed .chatlistHeader .info {
-        display: none; }
-      .mainContainer .chatlist.collapsed .chat span {
-        font-size: 0; }
-      .mainContainer .chatlist.collapsed .chat i {
-        font-size: 20px;
-        opacity: 0.3;
-        position: absolute;
-        margin: auto;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        width: 100%;
-        display: table;
-        line-height: 11px; }
-    .mainContainer .chatlist .chatlistHeader {
-      text-align: center;
-      background: #2C3442;
-      height: 100px; }
-      .mainContainer .chatlist .chatlistHeader .collapseButton {
-        position: relative;
-        height: 100%;
-        width: 32px;
-        float: right;
-        text-align: center;
-        font-size: 32px;
-        background: black;
-        opacity: 0.1;
-        cursor: pointer; }
-        .mainContainer .chatlist .chatlistHeader .collapseButton:hover {
-          opacity: 0.2; }
-        .mainContainer .chatlist .chatlistHeader .collapseButton i {
-          margin: auto;
-          top: 0;
-          bottom: 0;
-          position: absolute;
-          left: 0;
-          right: 0;
-          display: table;
-          width: 100%; }
-      .mainContainer .chatlist .chatlistHeader .info {
-        float: left;
-        height: 100%;
-        text-align: left;
-        padding: 30px 5px; }
-        .mainContainer .chatlist .chatlistHeader .info .title {
-          font-size: 23px; }
-        .mainContainer .chatlist .chatlistHeader .info .status {
-          font-size: 15px; }
-    .mainContainer .chatlist .chat:nth-child(2n+1) {
-      background: #1b1b1b; }
-    .mainContainer .chatlist .chat {
-      position: relative;
+    background: #12171D;
+    color: #283140; }
+    .programContainer .hudController .hudHeader {
       width: 100%;
-      text-align: center;
-      height: 32px;
-      background: #444B59;
-      line-height: 10px; }
-      .mainContainer .chatlist .chat.newNotifications .notifications {
-        display: initial; }
-      .mainContainer .chatlist .chat .notifications {
-        display: none;
-        position: absolute;
-        border-radius: 50%;
-        width: 13px;
-        height: 13px;
-        text-align: center;
-        top: 1px;
-        right: 1px;
-        background: red;
-        font-size: 10px;
-        font-weight: 100;
-        line-height: 12px; }
-      .mainContainer .chatlist .chat span {
-        font-size: 16px;
-        opacity: 0.3;
-        position: absolute;
-        margin: auto;
-        left: 0;
-        right: 0;
+      height: 64px; }
+    .programContainer .hudController .hudButton {
+      position: relative;
+      height: 50px;
+      width: 100%;
+      cursor: pointer; }
+      .programContainer .hudController .hudButton i {
+        width: 100%;
         top: 0;
         bottom: 0;
-        width: 100%;
-        display: table; }
-      .mainContainer .chatlist .chat i {
-        font-size: 0; }
-      .mainContainer .chatlist .chat.selected {
-        font-weight: 700; }
-        .mainContainer .chatlist .chat.selected i, .mainContainer .chatlist .chat.selected span {
-          opacity: 1; }
-  .mainContainer .users {
-    width: 160px;
-    height: 100%;
-    background: #E3E3E3; }
-    .mainContainer .users.collapsed {
-      width: 32px; }
-      .mainContainer .users.collapsed .usersHeader .info {
-        display: none; }
-    .mainContainer .users .usersHeader {
-      text-align: center;
-      background: #DADADA;
-      height: 100px; }
-      .mainContainer .users .usersHeader .collapseButton {
-        position: relative;
-        height: 100%;
-        width: 32px;
-        float: right;
+        margin: auto;
+        display: table;
+        position: absolute;
         text-align: center;
-        font-size: 32px;
-        background: white;
-        opacity: 0.1;
-        cursor: pointer; }
-        .mainContainer .users .usersHeader .collapseButton:hover {
-          opacity: 0.2; }
-        .mainContainer .users .usersHeader .collapseButton i {
-          color: black;
-          margin: auto;
-          top: 0;
-          bottom: 0;
-          position: absolute;
-          left: 0;
-          right: 0;
-          display: table;
-          width: 100%; }
-      .mainContainer .users .usersHeader .info {
-        float: left;
-        height: 100%;
-        padding: 30px;
-        line-height: 40px; }
-        .mainContainer .users .usersHeader .info .title {
-          font-size: 25px; }
-    .mainContainer .users .user:nth-child(2n+1) {
-      background: #ebebeb; }
-    .mainContainer .users .user {
-      text-align: center;
-      background: #f6f3f3; }
-      .mainContainer .users .user:hover {
-        background: #FFFFFF; }
-  .mainContainer .chats {
-    display: flex; }
-    .mainContainer .chats .chatWindow {
-      display: none;
+        font-size: 40px; }
+      .programContainer .hudController .hudButton.active i {
+        font-size: 0; }
+      .programContainer .hudController .hudButton.active.connection {
+        background: #283140; }
+      .programContainer .hudController .hudButton.active.users {
+        background: #cbcbcb; }
+  .programContainer .hudPanel {
+    width: 128px;
+    height: 100%;
+    position: relative; }
+    .programContainer .hudPanel .innerPanel {
+      left: -128px;
+      z-index: -1;
+      position: absolute;
       height: 100%;
-      width: 100%; }
-      .mainContainer .chats .chatWindow.active {
-        display: initial; }
-      .mainContainer .chats .chatWindow .chatHeader {
-        background: #FF5454; }
-        .mainContainer .chats .chatWindow .chatHeader .title {
-          -webkit-touch-callout: all;
-          -webkit-user-select: all;
-          -khtml-user-select: all;
-          -moz-user-select: all;
-          -ms-user-select: all;
-          user-select: all; }
-        .mainContainer .chats .chatWindow .chatHeader .topic {
-          -webkit-touch-callout: all;
-          -webkit-user-select: all;
-          -khtml-user-select: all;
-          -moz-user-select: all;
-          -ms-user-select: all;
-          user-select: all; }
-      .mainContainer .chats .chatWindow .messageHistory {
+      width: 100%;
+      padding: 0px 15px; }
+      .programContainer .hudPanel .innerPanel .panelHeader {
+        height: 105px;
+        padding: 3px;
+        text-align: left;
+        position: relative; }
+        .programContainer .hudPanel .innerPanel .panelHeader .title {
+          position: absolute;
+          bottom: 2px;
+          left: 2px;
+          font-size: 24px; }
+      .programContainer .hudPanel .innerPanel.active {
+        left: 0; }
+      .programContainer .hudPanel .innerPanel.connection {
+        background: #283140; }
+      .programContainer .hudPanel .innerPanel.users {
+        background: #cbcbcb; }
+        .programContainer .hudPanel .innerPanel.users .userlist {
+          display: none; }
+          .programContainer .hudPanel .innerPanel.users .userlist.active {
+            display: initial; }
+  .programContainer .mainContainer {
+    position: relative;
+    padding: 30px 18px 18px 18px;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column; }
+    .programContainer .mainContainer .chatSelection {
+      height: 40px;
+      width: 100%;
+      background: #C5393A;
+      font-size: 0;
+      display: flex;
+      flex-shrink: 0; }
+      .programContainer .mainContainer .chatSelection .chatButtons {
         width: 100%; }
-      .mainContainer .chats .chatWindow .message {
-        border: 1px solid black;
+      .programContainer .mainContainer .chatSelection .chatButton {
+        background: #D33c3c;
+        height: 40px;
+        color: white;
+        display: inline-block;
+        padding: 0px 15px;
+        font-size: 16px;
+        line-height: 41px;
+        cursor: pointer; }
+        .programContainer .mainContainer .chatSelection .chatButton:nth-child(2n+1) {
+          background: #C5393A; }
+        .programContainer .mainContainer .chatSelection .chatButton.active {
+          background: #000; }
+      .programContainer .mainContainer .chatSelection .connectTo {
+        font-size: 0;
+        display: flex;
+        flex-shrink: 0; }
+        .programContainer .mainContainer .chatSelection .connectTo .input {
+          width: 160px;
+          margin: 0;
+          display: inline-block; }
+          .programContainer .mainContainer .chatSelection .connectTo .input input {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 40px;
+            border: none;
+            background: #f3f3f3;
+            color: #283140;
+            font-size: 18px;
+            text-indent: 10px;
+            outline-style: none; }
+        .programContainer .mainContainer .chatSelection .connectTo .button {
+          font-size: 34px;
+          background: #000;
+          display: inline-block;
+          margin: 0;
+          height: 40px;
+          width: 64px;
+          color: white;
+          text-align: center;
+          line-height: 42px;
+          cursor: pointer; }
+    .programContainer .mainContainer .chatsContainer {
+      height: 100%;
+      width: 100%;
+      position: relative; }
+      .programContainer .mainContainer .chatsContainer .chatWindow {
+        display: none;
         width: 100%;
+        position: absolute;
         height: 100%;
-        -webkit-touch-callout: all;
-        -webkit-user-select: all;
-        -khtml-user-select: all;
-        -moz-user-select: all;
-        -ms-user-select: all;
-        user-select: all; }
-        .mainContainer .chats .chatWindow .message.self {
-          background: #D3FFA9; }
-        .mainContainer .chats .chatWindow .message .sender {
-          width: 100px;
-          -webkit-touch-callout: all;
-          -webkit-user-select: all;
-          -khtml-user-select: all;
-          -moz-user-select: all;
-          -ms-user-select: all;
-          user-select: all; }
-        .mainContainer .chats .chatWindow .message .text {
-          -webkit-touch-callout: all;
-          -webkit-user-select: all;
-          -khtml-user-select: all;
-          -moz-user-select: all;
-          -ms-user-select: all;
-          user-select: all; }
-      .mainContainer .chats .chatWindow .messageBox {
-        position: fixed;
-        bottom: 0;
         width: 100%; }
-        .mainContainer .chats .chatWindow .messageBox input {
-          margin: 0; }
-        .mainContainer .chats .chatWindow .messageBox button {
-          margin: 0; }
+        .programContainer .mainContainer .chatsContainer .chatWindow.active {
+          display: initial; }
+        .programContainer .mainContainer .chatsContainer .chatWindow .chatHeader {
+          background: #FF5454; }
+          .programContainer .mainContainer .chatsContainer .chatWindow .chatHeader .title {
+            -webkit-touch-callout: all;
+            -webkit-user-select: all;
+            -khtml-user-select: all;
+            -moz-user-select: all;
+            -ms-user-select: all;
+            user-select: all; }
+          .programContainer .mainContainer .chatsContainer .chatWindow .chatHeader .topic {
+            -webkit-touch-callout: all;
+            -webkit-user-select: all;
+            -khtml-user-select: all;
+            -moz-user-select: all;
+            -ms-user-select: all;
+            user-select: all; }
+        .programContainer .mainContainer .chatsContainer .chatWindow .messageHistory {
+          width: 100%;
+          position: absolute;
+          bottom: 0; }
+        .programContainer .mainContainer .chatsContainer .chatWindow .message {
+          padding: 10px;
+          margin: 4px 0px;
+          width: 100%;
+          -webkit-touch-callout: all;
+          -webkit-user-select: all;
+          -khtml-user-select: all;
+          -moz-user-select: all;
+          -ms-user-select: all;
+          user-select: all; }
+          .programContainer .mainContainer .chatsContainer .chatWindow .message.self {
+            background: #D3FFA9; }
+          .programContainer .mainContainer .chatsContainer .chatWindow .message .sender {
+            width: 200px;
+            height: 100%;
+            float: left;
+            -webkit-touch-callout: all;
+            -webkit-user-select: all;
+            -khtml-user-select: all;
+            -moz-user-select: all;
+            -ms-user-select: all;
+            user-select: all; }
+          .programContainer .mainContainer .chatsContainer .chatWindow .message .text {
+            display: table-cell;
+            -webkit-touch-callout: all;
+            -webkit-user-select: all;
+            -khtml-user-select: all;
+            -moz-user-select: all;
+            -ms-user-select: all;
+            user-select: all; }
+        .programContainer .mainContainer .chatsContainer .chatWindow .messageBox {
+          font-size: 0;
+          display: flex; }
+          .programContainer .mainContainer .chatsContainer .chatWindow .messageBox .input {
+            display: inline-block;
+            margin: 0;
+            width: 100%; }
+            .programContainer .mainContainer .chatsContainer .chatWindow .messageBox .input input {
+              margin: 0;
+              padding: 0;
+              width: 100%;
+              height: 40px;
+              border: none;
+              background: #283140;
+              color: white;
+              font-size: 18px;
+              text-indent: 10px;
+              outline-style: none; }
+          .programContainer .mainContainer .chatsContainer .chatWindow .messageBox .button {
+            font-size: 16px;
+            background: #000;
+            display: inline-block;
+            margin: 0;
+            height: 40px;
+            width: 64px;
+            color: white;
+            text-align: center;
+            line-height: 37px;
+            cursor: pointer; }
