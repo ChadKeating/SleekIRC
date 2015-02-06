@@ -1,5 +1,5 @@
-﻿var Channel = function (name) {
-	Chat.call(this)
+﻿var Channel = function (name, update) {
+	Chat.call(this, update)
 	this.name = name;
 	this.users = [];
 	this.topic = "";
@@ -23,11 +23,8 @@
 
 	p.changeTopic = function (topic) {
 		this.topic = topic;
-		this.updateHeader();
+		this.updateScope();
 	};
 
-	p.getTopic = function () {
-		return this.topic;
-	}
 
 })(Channel.prototype = Object.create(Chat.prototype));

@@ -1,95 +1,60 @@
-﻿var Chat = function () {
+﻿var Chat = function (update) {
 	this.id = "CHAT_".generateId("_");
 	this.name;
 	this.type = "CHAT";
-	this.history;
+	this.messages = [];
 	this.status = STATUS.NOTCONNECTED;
 	this.$HTML = null;
 	this.active = false;
 	this.notifications = 0;
+	this.updateScope = update;
 };
 (function (p) {
-		
-	p.getTitle = function () {
-		return this.name;
-	};
-
-	p.getTopic = function () {
-		return this.id;
-	}
 
 	p.makeActive = function () {
 		this.active = true;
-		this.$HTML.button.addClass("selected");
-		this.$HTML.window.addClass("active");
 		this.notifications = 0;
-		UI.updateNotifications(this.$HTML, this.notifications);
+		this.updateScope();
 	};
 
 	p.makeInactive = function () {
 		this.active = false;
-		this.$HTML.button.removeClass("selected");
-		this.$HTML.window.removeClass("active");
-		UI.updateNotifications(this.$HTML, this.notifications);
 	};
+
 	p.isActive = function () {
 		return this.active;
 	};
-
+	p.focusChat = function () {
+		Sleek.changeChat(this.id);
+	};
 	p.chatJoined = function (focusChat) {
 		this.status = STATUS.CONNECTED;
-		if (this.$HTML == null) {
-			
-			this.setupChat();
-		}
+		this.setupChat();
 		if (focusChat) {
-			Sleek.changeChat(this.name);
+			this.focusChat();
 		}
-		UI.updateNotifications(this.$HTML, this.notifications);
+		this.updateScope();
 	};
 
 	p.setupChat = function () {
 		var _this = this;
 		Sleek.setupChatLog(_this);
-		this.$HTML = {
-			button: null,
-			window: null
-		};
-		this.$HTML.button = UI.createChatButton(this.name, "channel");
-		this.$HTML.window = UI.createChatWindow();
-		this.updateHeader();
-		this.makeActive();
-
-		this.$HTML.button.click(function () {
-			if (!_this.isActive()) {
-				Sleek.changeChat(_this.name);
-			}
-		});
-
-		var inputBox = this.$HTML.window.find(".messageBox input");
-		inputBox.on("keypress", function (e) {
-			if (e.keyCode == 13) {
-				_this.sendMessage();
-			}
-		});
-
-		this.$HTML.window.find(".messageBox button").click(function () {
-			_this.sendMessage();
-		});
-
 	};
-
+	/*
 	p.updateHeader = function () {
 		var head = this.$HTML.window.find(".chatHeader");
 		head.find(".title").text(this.getTitle());
 		head.find(".topic").text(this.getTopic());
 	};
-
-	p.sendMessage = function () {
-		var message = this.$HTML.window.find(".messageBox input").val();
+	*/
+	p.sendMessage = function (message) {
 		Sleek.client.say(this.name, message);
 		this.addMessage(Sleek.profile.name, message, true);
+		/*
+		var message = this.$HTML.window.find(".messageBox input").val();
+		this.addMessage(Sleek.profile.name, message, true);
 		this.$HTML.window.find(".messageBox input").val("");
+		*/
 	};
 
 	p.receiveMessage = function (sender, message) {
@@ -98,12 +63,16 @@
 		}
 		this.addMessage(sender, message);
 	};
-
+	
 	p.addMessage = function (sender, message, isSelf) {
-		var timestamp = Sleek.date.getTime();
+		var timestamp = Date.now();
+		this.messages.push(new Message(timestamp, sender, message, isSelf));
+		this.updateScope();
+		/*
 		Sleek.addChatLog(this.id, timestamp, sender, message)
 		UI.addMessage(this.$HTML, timestamp, sender, message, isSelf);
 		UI.updateNotifications(this.$HTML, this.notifications);
+		*/
 	};
-
+	
 })(Chat.prototype);

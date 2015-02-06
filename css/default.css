@@ -1,5 +1,5 @@
+﻿@import url(http://fonts.googleapis.com/css?family=Roboto);
 /* html5doctor.com Reset v1.6.1 - http://cssreset.com */
-@import url(http://fonts.googleapis.com/css?family=Roboto);
 html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary, time, mark, audio, video {
   margin: 0;
   padding: 0;
@@ -90,16 +90,20 @@ div {
 
 .handleBar {
   position: absolute;
+  z-index: 100;
   top: 0;
   width: 100%;
-  height: 25px; }
+  height: 25px;
+  -webkit-app-region: drag; }
   .handleBar .fa {
     float: right;
     height: 20px;
     width: 25px;
     text-align: center;
     margin: 2px 2px;
-    font-size: 20px; }
+    font-size: 20px;
+    -webkit-app-region: no-drag;
+    cursor: pointer; }
 
 .programContainer {
   width: 100%; }
@@ -109,7 +113,8 @@ div {
     width: 64px;
     height: 100%;
     background: #12171D;
-    color: #283140; }
+    color: #283140;
+    z-index: 10; }
     .programContainer .hudController .hudHeader {
       width: 100%;
       height: 64px; }
@@ -132,18 +137,24 @@ div {
       .programContainer .hudController .hudButton.active.connection {
         background: #283140; }
       .programContainer .hudController .hudButton.active.users {
-        background: #cbcbcb; }
+        background: #CBCBCB; }
   .programContainer .hudPanel {
-    width: 128px;
+    width: 168px;
     height: 100%;
-    position: relative; }
+    position: relative;
+    margin-left: -168px;
+    transition: all 0.5s ease;
+    z-index: -1; }
+    .programContainer .hudPanel.active {
+      margin-left: 0px; }
     .programContainer .hudPanel .innerPanel {
-      left: -128px;
+      left: -168px;
       z-index: -1;
       position: absolute;
       height: 100%;
       width: 100%;
-      padding: 0px 15px; }
+      padding: 0px 15px;
+      transition: all 0.5s ease; }
       .programContainer .hudPanel .innerPanel .panelHeader {
         height: 105px;
         padding: 3px;
@@ -159,7 +170,7 @@ div {
       .programContainer .hudPanel .innerPanel.connection {
         background: #283140; }
       .programContainer .hudPanel .innerPanel.users {
-        background: #cbcbcb; }
+        background: #CBCBCB; }
         .programContainer .hudPanel .innerPanel.users .userlist {
           display: none; }
           .programContainer .hudPanel .innerPanel.users .userlist.active {
@@ -227,6 +238,12 @@ div {
       height: 100%;
       width: 100%;
       position: relative; }
+      .programContainer .mainContainer .chatsContainer .noChats {
+        position: absolute;
+        height: 100%;
+        width: 100%; }
+        .programContainer .mainContainer .chatsContainer .noChats.hidden {
+          display: none; }
       .programContainer .mainContainer .chatsContainer .chatWindow {
         display: none;
         width: 100%;

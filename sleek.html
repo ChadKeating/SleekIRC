@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html>
+<html ng-app="sleek">
 <head>
     <meta charset="utf-8">
     <title>SleekIRC</title>
@@ -8,125 +8,89 @@
     <link rel="stylesheet" href="./libs/font-awesome-4.3.0/css/font-awesome.min.css" />
 
     <script type="text/javascript" src="./libs/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="./libs/angular.min.js"></script>
     <script type="text/javascript" src="./libs/jquery.linkify.min.js"></script>
     <script type="text/javascript" src="./libs/localstoragedb.min.js"></script>
+
 
     <script type="text/javascript" src="./js/prototypes.js"></script>
     <script type="text/javascript" src="./js/ENUMS.js"></script>
 
-    <script type="text/javascript" src="./js/Sleek.js"></script>
-    <script type="text/javascript" src="./js/UI.js"></script>
 
+    <script type="text/javascript" src="./js/Objects/Message.js"></script>
     <script type="text/javascript" src="./js/Objects/Chat.js"></script>
     <script type="text/javascript" src="./js/Objects/Channel.js"></script>
     <script type="text/javascript" src="./js/Objects/Private.js"></script>
 
+    <script type="text/javascript" src="./js/Sleek.js"></script>
+    <script type="text/javascript" src="./js/UI.js"></script>
 </head>
 <body>
-    <div class="handleBar">
-        <div class="close fa fa-times"></div>
-        <div class="maximize fa fa-square-o"></div>
-        <div class="minimize fa fa-minus"></div>
+    <div class="handleBar" handle-controller>
+        <div class="close fa fa-times" ng-click="handle.close()"></div>
+        <div class="maximize fa fa-square-o" ng-click="handle.maximize()"></div>
+        <div class="minimize fa fa-minus" ng-click="handle.minimize()"></div>
     </div>
-    <div class="programContainer">
+    <div class="programContainer" hud-controller chats-controller>
         <div class="hudController">
             <div class="hudHeader"></div>
-            <div class="hudButton connection">
+            <div class="hudButton connection" ng-click="hud.setPanel('connection')" ng-class="{active: hud.isPanel('connection')}">
                 <i class="fa fa-refresh"></i>
             </div>
-            <div class="hudButton users active">
+            <div class="hudButton users" ng-click="hud.setPanel('users')" ng-class="{active: hud.isPanel('users')}">
                 <i class="fa fa-users"></i>
             </div>
             <div class="hudButton">
                 <i class="fa fa-square"></i>
             </div>
         </div>
-
-        <div class="hudPanel">
-            <div class="innerPanel users active">
+        <div class="hudPanel" ng-class="{active: !hud.isPanel('noSelection')}">
+            <div class="innerPanel connection" ng-class="{active: hud.isPanel('connection')}">
+                <div class="panelHeader">
+                    <div class="title">Connection</div>
+                </div>
+                <div class="connectionForm"></div>
+            </div>
+            <div class="innerPanel users" ng-class="{active: hud.isPanel('users')}">
                 <div class="panelHeader">
                     <div class="title">Users</div>
                 </div>
                 <div class="userlist active"></div>
             </div>
         </div>
+
         <div class="mainContainer">
             <div class="chatSelection">
                 <div class="chatButtons">
-                    <div class="chatButton active">##oddskillHQ</div>
-                    <div class="chatButton">##test</div>
-                    <div class="chatButton">#tiny</div>
+                    <div class="chatButton" ng-click="chat.focusChat()" ng-repeat="chat in chats.getChats()" ng-class="{active: chat.isActive()}">{{chat.name}}</div>
                 </div>
                 <div class="connectTo">
-                    <div class="input"><input type="text" /></div>
-                    <div class="button">
+                    <div class="input"><input type="text" ng-model="newChatName" placeholder="Channel / User"/></div>
+                    <div class="button" ng-click="chats.join(newChatName)">
                         <i class="fa fa-long-arrow-right"></i>
                     </div>
                 </div>
             </div>
             <div class="chatsContainer">
-                <div class="chatWindow active">
+                <div class="noChats" ng-class="{hidden: chats.getChats().length > 0}">No Chats!</div>
+                <div class="chatWindow" ng-repeat="chat in chats.getChats()" ng-class="{active: chat.isActive()}">
                     <div class="chatHeader">
-                        <div class="title">THIS IS A title</div>
-                        <div class="topic">This is some randome topic</div>
+                        <div class="title">{{chat.name}}</div>
+                        <div class="topic">{{chat.topic}}</div>
                     </div>
                     <div class="messageHistory">
-                        <div class="message self">
-                            <div class="sender">MY MESSAGE</div>
-                            <div class="text">My Like MEssages!</div>
-                        </div>
-                        <div class="message self">
-                            <div class="sender">MY MESSAGE</div>
-                            <div class="text">My Like MEssages!My Like MEssages!My Like MEssages!My Like MEssages!My Like MEssages!My Like MEssages!My Like MEssages!</div>
-                        </div>
-                        <div class="message self">
-                            <div class="sender">MY MESSAGE</div>
-                            <div class="text">My Like MEssages!</div>
-                        </div>
-                        <div class="message self">
-                            <div class="sender">MY MESSAGE</div>
-                            <div class="text">My Like MEssages!</div>
-                        </div>
-                        <div class="message">
-                            <div class="sender">MR MESSAGE</div>
-                            <div class="text">I Like MEssages!</div>
-                        </div>
-                        <div class="message self">
-                            <div class="sender">MY MESSAGE</div>
-                            <div class="text">My Like MEssages!</div>
+                        <div class="message" ng-class="{self: message.senderSelf}" ng-repeat="message in chat.messages | orderBy:timestamp">
+                            <div class="sender">{{message.sender}}</div>
+                            <div class="text">{{message.getMessageHTML()}}</div>
                         </div>
                         <div class="messageBox">
-                            <div class="input"><input type="text" /></div>
-                            <div class="button">Send</div>
+                            <div class="input"><input type="text" ng-model="SendMessage[chat.id]" /></div>
+                            <div class="button" ng-click="chat.sendMessage(SendMessage[chat.id])">Send</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="resources">
-        <div class="chat">
-            <span></span>
-            <i class="fa fa-envelope"></i>
-            <div class="notifications">0</div>
-        </div>
-        <div class="message">
-            <div class="sender"></div>
-            <div class="text"></div>
-        </div>
-        <div class="chatWindow">
-            <div class="chatHeader">
-                <div class="title"></div>
-                <div class="topic"></div>
-            </div>
-            <div class="messageHistory"></div>
-            <div class="messageBox">
-                <input type="text" />
-                <button>Send</button>
-            </div>
-        </div>
-
-    </div>
-
 </body>
 </html>

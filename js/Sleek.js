@@ -22,6 +22,11 @@
 	}];
 
 	self.chats = [];
+	self.getChatById = function (id) {
+		return self.chats.first(function (chat) {
+			return chat.id == id;
+		});
+	};
 	self.getChatByName = function (name) {
 		return self.chats.first(function (chat) {
 			return chat.name == name;
@@ -34,7 +39,7 @@
 	};
 	self.changeChat = function (chat) {
 		self.chats.forEach(function (e) {
-			if (e.name == chat) {
+			if (e.id == chat) {
 				e.makeActive();
 			} else {
 				e.makeInactive();
@@ -126,7 +131,6 @@
 			var channelPresent = self.getChatByName(channel);
 			if (channelPresent) {
 				channelPresent.changeTopic(topic);
-				channelPresent.updateHeader();
 			}
 		});
 
@@ -137,12 +141,9 @@
 			});
 		}
 
-		UI.updateServerTitle(self.servers[0].name + ",");
-
 		self.client.connect(function (e, r) {
 			if (e) {
 				self.servers[0].status = STATUS.CONNECTED;
-				UI.updateServerStatus(true);
 			}
 		});
 	};
