@@ -5,11 +5,91 @@
 	var resources = null;
 
 	self.window = gui.Window.get();
+	self.window.on('maximize', function () {
+		self.window.isMaximized = true;
+	});
+
+	self.window.on('unmaximize', function () {
+		self.window.isMaximized = false;
+	});
+
+	self.app = angular.module("sleek", []);
+	self.app.directive("handleController", function () {
+		return {
+			restrict: "A",
+			controllerAs: "handle",
+			controller: function () {
+				this.close = function () { self.window.close() };
+				this.maximize = function () {
+					if (self.window.isMaximized) {
+						self.window.unmaximize();
+					} else {
+						self.window.maximize();
+					}
+				};
+				this.minimize = function () { self.window.minimize() };
+
+			}
+		}
+	});
+
+	self.app.directive("hudController", function () {
+		return {
+			restrict: "A",
+			controllerAs: "hud",
+			controller: function () {
+				this.panel = "noSelection";
+				this.setPanel = function (panel) {
+					if (this.panel == panel) {
+						this.panel = "noSelection";
+					} else {
+						this.panel = panel;
+					}
+				};
+				this.isPanel = function (panel) {
+					return this.panel == panel;
+				};
+			}
+		};
+	});
+
+	self.app.directive("chatsController", function () {
+		return {
+			restrict: "A",
+			controllerAs: "chats",
+			controller: ['$scope', function ($scope) {
+				this.sendMessage = {};
+				this.getChats = function () {
+					return Sleek.chats;
+				}
+				this.join = function () {
+					var newChat = $scope.newChatName;
+					if (newChat.length <= 0) {
+						return;
+					}
+					if (newChat.indexOf("#") == 0) {
+						//join channel
+						if (Sleek.getChatByName(newChat)) {
+							//Channel Exists, Switch to it
+						} else {
+							//Create new channel connection
+							var newChannel = new Channel(newChat, function () { $scope.$apply() });
+							newChannel.join();
+							Sleek.chats.push(newChannel);
+							$scope.newChatName = "";
+						}
+					} else {
+						//pm user
+					}
+				};
+
+			}]
+		};
+	});
 
 	self.init = function () {
-		main = $(".mainContainer");
+		main = $(".programContainer");
 		resources = $(".resources");
-
 		setHeightOfMain(main);
 		self.window.on('resize', function () { setHeightOfMain(main); });
 		self.window.on('unmaximize', function () { setHeightOfMain(main); });
@@ -18,7 +98,7 @@
 
 		chatList.find(".chatJoin input").on("keypress", function (e) {
 			if (e.keyCode == 13) {
-				var newChannel = new Channel(main.find(".chatJoin input").val());
+
 				if (!Sleek.getChatByName(newChannel.name)) {
 					Sleek.chats.push(newChannel);
 					newChannel.join();
@@ -35,7 +115,6 @@
 			}
 		});
 
-
 		chatList.find(".collapseButton").click(function (e) {
 			$(e.currentTarget).find("i").toggleClass("fa-angle-double-left");
 			$(e.currentTarget).find("i").toggleClass("fa-angle-double-right");
@@ -47,7 +126,7 @@
 			$(e.currentTarget).find("i").toggleClass("fa-angle-double-right");
 			userlist.toggleClass("collapsed");
 		});
-	
+
 
 
 		self.window.on('close', function () {
@@ -56,14 +135,13 @@
 			this.close(true);
 		});
 	};
-	
 
 	function setHeightOfMain($main) {
 		var mainHeight = window.innerHeight - $(".topBar").height(); -(gui.App.manifest.window.toolbar ? 32 : 0);
 		$main.height(mainHeight);
 	};
 
-	self.addMessage = function ($html, sender, message, isSelf) {
+	self._addMessage = function ($html, timestamp, sender, message, isSelf) {
 		var newMessage = resources.find(".message").clone();
 		newMessage.find(".sender").text(sender + ":");
 
@@ -87,32 +165,15 @@
 		$html.window.find(".messageHistory").append(newMessage);
 	};
 
-	self.createChatButton = function (chatname, type) {
-		var chatButton = resources.find(".chat").clone()
-			.addClass(type);
-		chatButton.find("span").text(chatname);
-		main.find(".chatlist").append(chatButton);
-		return chatButton;
-	};
-
-	self.createChatWindow = function () {
-		var chatWindow = resources.find(".chatWindow").clone();
-		main.find(".chats").append(chatWindow);
-		return chatWindow;
-	};
-
-	self.updateServerTitle = function (title) {
-		main.find(".chatlist .title").text(title);
-	};
-
 	self.updateServerStatus = function (connected) {
 		var statusText = connected ? "CONNECTED" : "NOT CONNECTED";
 		main.find(".chatlist .status").text(statusText);
 	};
+
 	self.updateNotifications = function ($html, number) {
 		var button = $html.button;
 
-		if (Sleek.profile.UseMaxNotifications && number >= Sleek.profile.maxNotifications) {
+		if (Sleek.settings.useMaxNotifications && number >= Sleek.settings.maxNotifications) {
 			button.find(".notifications").text("!");
 		} else {
 			button.find(".notifications").text(number);

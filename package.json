@@ -2,7 +2,7 @@
   "name": "sleekirc",
   "main": "sleek.html",
   "window":{
-    "toolbar":true,
+    "toolbar":false,
 	"icon":"./images/icon.png",
     "fullscreen":false,
 	"width":800,
@@ -10,7 +10,7 @@
 	"min_width":800,
 	"min_height":600,
 	"title": "SleekIRC",
-    "frame": true
+    "frame": false
   }
 
 }
