@@ -1,5 +1,5 @@
-﻿var Private = function (name) {
-	Chat.call(this)
+﻿var Private = function (name, update) {
+	Chat.call(this, update);
 	this.name = name;
 	this.type = "PRIVATE";
 };

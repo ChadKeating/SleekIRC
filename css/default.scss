@@ -242,6 +242,7 @@ div{
 				}
 				.chatHeader{
 					background: #FF5454;
+					padding: 18px;
 					.title{
 						@include selectable;
 					}
@@ -256,13 +257,16 @@ div{
 					//top: 0;
 				}
 				.message{
-					padding: 10px;
+					padding: 18px;
 					margin: 4px 0px;
 					width: 100%;
 					@include selectable;
 					&.self{  
 						background: #D3FFA9; //First colour
 					};
+					.time{
+						color: #FF5454;
+					}
 					.sender{
 						width: 200px;
 						height: 100%;
