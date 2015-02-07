@@ -121,9 +121,9 @@
 			var chatPresent = self.getChatByName(name);
 			if (!chatPresent) {
 				chatPresent = new Private(name);
+				chatPresent.chatJoined(true);
 				self.chats.push(chatPresent);
 			}
-			chatPresent.chatJoined(true);
 			chatPresent.receiveMessage(text);
 		});
 
@@ -148,12 +148,16 @@
 		});
 	};
 
-	self.closeSequence = function () {
+	self.closeSequence = function (closecallback) {
 		//Disconnect all chats
 		//Disconnect server
 		//return;
-		self.client.disconnect();
-		self.db.commit();
+		self.client.disconnect(self.profile.leavingMessage, function(){
+			self.db.commit();
+			if (closecallback) {
+				closecallback();
+			}
+		});
 	};
 
 })(Sleek);

@@ -253,7 +253,8 @@ div {
         .programContainer .mainContainer .chatsContainer .chatWindow.active {
           display: initial; }
         .programContainer .mainContainer .chatsContainer .chatWindow .chatHeader {
-          background: #FF5454; }
+          background: #FF5454;
+          padding: 18px; }
           .programContainer .mainContainer .chatsContainer .chatWindow .chatHeader .title {
             -webkit-touch-callout: all;
             -webkit-user-select: all;
@@ -273,7 +274,7 @@ div {
           position: absolute;
           bottom: 0; }
         .programContainer .mainContainer .chatsContainer .chatWindow .message {
-          padding: 10px;
+          padding: 18px;
           margin: 4px 0px;
           width: 100%;
           -webkit-touch-callout: all;
@@ -284,6 +285,8 @@ div {
           user-select: all; }
           .programContainer .mainContainer .chatsContainer .chatWindow .message.self {
             background: #D3FFA9; }
+          .programContainer .mainContainer .chatsContainer .chatWindow .message .time {
+            color: #FF5454; }
           .programContainer .mainContainer .chatsContainer .chatWindow .message .sender {
             width: 200px;
             height: 100%;

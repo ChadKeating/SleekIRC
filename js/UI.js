@@ -1,10 +1,10 @@
 ﻿var UI = {};
 (function (self) {
-	var gui = require('nw.gui');
+	self.gui = require('nw.gui');
 	var main = null;
 	var resources = null;
 
-	self.window = gui.Window.get();
+	self.window = self.gui.Window.get();
 	self.window.on('maximize', function () {
 		self.window.isMaximized = true;
 	});
@@ -13,7 +13,46 @@
 		self.window.isMaximized = false;
 	});
 
-	self.app = angular.module("sleek", []);
+	self.window.on('new-win-policy', function (frame, url, policy) {
+		self.gui.Shell.openExternal(url);
+		policy.ignore();
+	});
+
+	self.app = angular.module("sleek", ["ngSanitize", "ui.utils"]);
+	self.app.directive('ngFocus', function ($timeout) {
+		return {
+			link: function (scope, element, attrs) {
+				scope.$watch(attrs.ngFocus, function (val) {
+					if (angular.isDefined(val) && val) {
+						$timeout(function () { element[0].focus(); });
+					}
+				}, true);
+
+				element.bind('blur', function () {
+					if (angular.isDefined(attrs.ngFocusLost)) {
+						scope.$apply(attrs.ngFocusLost);
+
+					}
+				});
+			}
+		};
+	});
+
+	self.app.filter("linkify", function () {
+		return function (message) {
+			var msgHTML = $("<div>").text(message);
+			msgHTML.text();
+			msgHTML.linkify({
+				tagName: 'a',
+				target: '_blank',
+				newLine: '\n',
+				linkClass: null,
+				linkAttributes: null
+			});
+			return msgHTML.html();
+		};
+	});
+
 	self.app.directive("handleController", function () {
 		return {
 			restrict: "A",
@@ -28,7 +67,6 @@
 					}
 				};
 				this.minimize = function () { self.window.minimize() };
-
 			}
 		}
 	});
@@ -53,6 +91,8 @@
 		};
 	});
 
+
+
 	self.app.directive("chatsController", function () {
 		return {
 			restrict: "A",
@@ -67,25 +107,30 @@
 					if (newChat.length <= 0) {
 						return;
 					}
-					if (newChat.indexOf("#") == 0) {
-						//join channel
-						if (Sleek.getChatByName(newChat)) {
-							//Channel Exists, Switch to it
-						} else {
+					var chatExists = Sleek.getChatByName(newChat);
+					if (chatExists) {
+						chatExists.makeActive();
+					} else {
+						if (newChat.indexOf("#") == 0) {
+							//join channel
 							//Create new channel connection
 							var newChannel = new Channel(newChat, function () { $scope.$apply() });
+							Sleek.chats.push(newChannel); //Push to array first so angular can view changes.
 							newChannel.join();
-							Sleek.chats.push(newChannel);
+							$scope.newChatName = "";
+						} else {
+							//pm user
+							var newPM = new Private(newChat, function () { $scope.$apply() });
+							Sleek.chats.push(newPM); //Push to array first so angular can view changes.
+							newPM.chatJoined(true);
 							$scope.newChatName = "";
 						}
-					} else {
-						//pm user
 					}
 				};
-
 			}]
 		};
 	});
+
 
 	self.init = function () {
 		main = $(".programContainer");
@@ -127,42 +172,22 @@
 			userlist.toggleClass("collapsed");
 		});
 
-
-
 		self.window.on('close', function () {
+			var _this = this;
 			this.hide();
-			Sleek.closeSequence();
-			this.close(true);
+			Sleek.closeSequence(function () {
+				_this.close(true);
+			});
 		});
 	};
 
 	function setHeightOfMain($main) {
-		var mainHeight = window.innerHeight - $(".topBar").height(); -(gui.App.manifest.window.toolbar ? 32 : 0);
+		var mainHeight = window.innerHeight - $(".topBar").height(); -(self.gui.App.manifest.window.toolbar ? 32 : 0);
 		$main.height(mainHeight);
 	};
 
 	self._addMessage = function ($html, timestamp, sender, message, isSelf) {
-		var newMessage = resources.find(".message").clone();
-		newMessage.find(".sender").text(sender + ":");
 
-		var textField = newMessage.find(".text");
-		textField.text(message);
-		textField.linkify({
-			tagName: 'a',
-			target: '_blank',
-			newLine: '\n',
-			linkClass: null,
-			linkAttributes: null
-		});
-		textField.find("a").click(function (e) {
-			e.preventDefault();
-			gui.Shell.openExternal($(e.currentTarget).attr("href"));
-		});
-
-		if (isSelf) {
-			newMessage.addClass("self");
-		}
-		$html.window.find(".messageHistory").append(newMessage);
 	};
 
 	self.updateServerStatus = function (connected) {
