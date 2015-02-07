@@ -19,8 +19,26 @@
 	});
 
 	self.app = angular.module("sleek", ["ngSanitize", "ui.utils"]);
+	self.app.directive('ngFocus', function ($timeout) {
+		return {
+			link: function (scope, element, attrs) {
+				scope.$watch(attrs.ngFocus, function (val) {
+					if (angular.isDefined(val) && val) {
+						$timeout(function () { element[0].focus(); });
+					}
+				}, true);
 
-	self.app.filter("linkify",function () {
+				element.bind('blur', function () {
+					if (angular.isDefined(attrs.ngFocusLost)) {
+						scope.$apply(attrs.ngFocusLost);
+
+					}
+				});
+			}
+		};
+	});
+
+	self.app.filter("linkify", function () {
 		return function (message) {
 			var msgHTML = $("<div>").text(message);
 			msgHTML.text();
@@ -34,7 +52,7 @@
 			return msgHTML.html();
 		};
 	});
-	
+
 	self.app.directive("handleController", function () {
 		return {
 			restrict: "A",
@@ -73,6 +91,8 @@
 		};
 	});
 
+
+
 	self.app.directive("chatsController", function () {
 		return {
 			restrict: "A",
@@ -110,7 +130,7 @@
 			}]
 		};
 	});
-	
+
 
 	self.init = function () {
 		main = $(".programContainer");

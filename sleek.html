@@ -67,7 +67,7 @@
                     <div class="chatButton" ng-click="chat.focusChat()" ng-repeat="chat in chats.getChats()" ng-class="{active: chat.isActive()}">{{chat.name}}</div>
                 </div>
                 <div class="connectTo">
-                    <div class="input"><input type="text" ng-model="newChatName" ui-keydown="{'enter':'chats.join(newChatName)'}" placeholder="Channel / User" /></div>
+                    <div class="input"><input type="text" ng-model="newChatName" ui-keydown="{'enter':'chats.join(newChatName)'}" placeholder="Channel / User" autofocus /></div>
                     <div class="button" ng-click="chats.join(newChatName)">
                         <i class="fa fa-long-arrow-right"></i>
                     </div>
@@ -86,7 +86,7 @@
                             <div class="text" ng-bind-html="message.message | linkify"></div>
                         </div>
                         <div class="messageBox">
-                            <div class="input"><input type="text" ng-model="SendMessage[chat.id]" ui-keydown="{'enter':'chat.sendMessage(SendMessage[chat.id])'}" /></div>
+                            <div class="input"><input type="text" ng-model="SendMessage[chat.id]" ui-keydown="{'enter':'chat.sendMessage(SendMessage[chat.id])'}" ng-focus="chat.active" /></div>
                             <div class="button" ng-click="chat.sendMessage(SendMessage[chat.id])">Send</div>
                         </div>
                     </div>
