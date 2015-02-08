@@ -134,6 +134,10 @@
 					return Sleek.chats;
 				}
 				this.join = function () {
+					if (Sleek.servers[0].status == STATUS.NOTCONNECTED) {
+						alert("Not connected. Need to connect before joining");
+						return;
+					}
 					var newChat = $scope.newChatName;
 					if (newChat.length <= 0) {
 						return;
@@ -173,44 +177,9 @@
 
 	self.init = function () {
 		main = $(".programContainer");
-		resources = $(".resources");
 		setHeightOfMain(main);
 		self.window.on('resize', function () { setHeightOfMain(main); });
 		self.window.on('unmaximize', function () { setHeightOfMain(main); });
-		var chatList = main.find(".chatlist");
-		var chatJoinButton = chatList.find(".chatJoin button")
-
-		chatList.find(".chatJoin input").on("keypress", function (e) {
-			if (e.keyCode == 13) {
-
-				if (!Sleek.getChatByName(newChannel.name)) {
-					Sleek.chats.push(newChannel);
-					newChannel.join();
-					chatList.find(".chatJoin input").val("");
-				}
-			}
-		});
-		chatJoinButton.on("click.joinChannel", function () {
-			var newChannel = new Channel(main.find(".chatJoin input").val());
-			if (!Sleek.getChatByName(newChannel.name)) {
-				Sleek.chats.push(newChannel);
-				newChannel.join();
-				main.find(".chatJoin input").val("");
-			}
-		});
-
-		chatList.find(".collapseButton").click(function (e) {
-			$(e.currentTarget).find("i").toggleClass("fa-angle-double-left");
-			$(e.currentTarget).find("i").toggleClass("fa-angle-double-right");
-			chatList.toggleClass("collapsed");
-		});
-		var userlist = main.find(".users");
-		userlist.find(".collapseButton").click(function (e) {
-			$(e.currentTarget).find("i").toggleClass("fa-angle-double-left");
-			$(e.currentTarget).find("i").toggleClass("fa-angle-double-right");
-			userlist.toggleClass("collapsed");
-		});
-
 		self.window.on('close', function () {
 			var _this = this;
 			this.hide();
@@ -236,13 +205,11 @@
 
 	self.updateNotifications = function ($html, number) {
 		var button = $html.button;
-
 		if (Sleek.settings.useMaxNotifications && number >= Sleek.settings.maxNotifications) {
 			button.find(".notifications").text("!");
 		} else {
 			button.find(".notifications").text(number);
 		}
-
 		if (number > 0) {
 			button.addClass("newNotifications");
 		} else {
