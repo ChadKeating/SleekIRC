@@ -30,7 +30,9 @@
 
 				element.bind('blur', function () {
 					if (angular.isDefined(attrs.ngFocusLost)) {
-						scope.$apply(attrs.ngFocusLost);
+						if (!scope.$$phase) {
+							scope.$apply(attrs.ngFocusLost);
+						}
 
 					}
 				});
@@ -91,7 +93,36 @@
 		};
 	});
 
-
+	self.app.directive("connectionController", function () {
+		return {
+			restrict: "A",
+			controllerAs: "connection",
+			controller: function () {
+				this.getServers = function () {
+					return Sleek.servers;
+				};
+				this.STATUS = STATUS;
+				this.changeUsername = function (username) {
+					Sleek.profile.name = username;
+					console.log(Sleek.profile.name +" "+ username)
+				};
+				this.connect = function () {
+					Sleek.client.opt.nick = Sleek.profile.name;
+					Sleek.client.connect(function (e, r) {
+						if (e) {
+							Sleek.servers[0].status = STATUS.CONNECTED;
+							var scope = angular.element($(".connection")).scope()
+							if (!scope.$$phase) {
+								scope.$apply();
+							}
+						}
+						console.log(e);
+						console.log(r);
+					});
+				};
+			}
+		};
+	});
 
 	self.app.directive("chatsController", function () {
 		return {
@@ -114,13 +145,21 @@
 						if (newChat.indexOf("#") == 0) {
 							//join channel
 							//Create new channel connection
-							var newChannel = new Channel(newChat, function () { $scope.$apply() });
+							var newChannel = new Channel(newChat, function () {
+								if (!$scope.$$phase) {
+									$scope.$apply();
+								}
+							});
 							Sleek.chats.push(newChannel); //Push to array first so angular can view changes.
 							newChannel.join();
 							$scope.newChatName = "";
 						} else {
 							//pm user
-							var newPM = new Private(newChat, function () { $scope.$apply() });
+							var newPM = new Private(newChat, function () {
+								if (!$scope.$$phase) {
+									$scope.$apply();
+								}
+							});
 							Sleek.chats.push(newPM); //Push to array first so angular can view changes.
 							newPM.chatJoined(true);
 							$scope.newChatName = "";

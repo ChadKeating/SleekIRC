@@ -141,11 +141,7 @@
 			});
 		}
 
-		self.client.connect(function (e, r) {
-			if (e) {
-				self.servers[0].status = STATUS.CONNECTED;
-			}
-		});
+
 	};
 
 	self.closeSequence = function (closecallback) {

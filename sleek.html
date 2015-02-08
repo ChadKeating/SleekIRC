@@ -47,17 +47,34 @@
             </div>
         </div>
         <div class="hudPanel" ng-class="{active: !hud.isPanel('noSelection')}">
-            <div class="innerPanel connection" ng-class="{active: hud.isPanel('connection')}">
+            <div class="innerPanel connection" connection-controller ng-class="{active: hud.isPanel('connection')}">
                 <div class="panelHeader">
-                    <div class="title">Connection</div>
+                    <div class="title">Connection Details</div>
                 </div>
-                <div class="connectionForm"></div>
+                <div class="connectionForm">
+                    <div class="field">
+                        <div class="fieldTitle">
+                            Freenode Status:
+                            <span ng-show="connection.getServers()[0].status === connection.STATUS.CONNECTED">CONNECTED</span>
+
+                            <span ng-show="connection.getServers()[0].status === connection.STATUS.NOTCONNECTED">NOT CONNECTED</span>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="fieldTitle">Username</div>
+                        <input type="text" ng-model="userName" ng-change="connection.changeUsername(userName)" />
+                    </div>
+                    <div class="button" ng-click="connection.connect()">Connect</div>
+                </div>
             </div>
             <div class="innerPanel users" ng-class="{active: hud.isPanel('users')}">
                 <div class="panelHeader">
                     <div class="title">Users</div>
                 </div>
-                <div class="userlist active"></div>
+                <div class="userlist" ng-class="{active: chat.isActive()}" ng-repeat="chat in chats.getChats()">
+                    <div class="user" ng-repeat="user in chat.users">{{user}}</div>
+                </div>
             </div>
         </div>
 

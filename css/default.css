@@ -106,15 +106,18 @@ div {
     cursor: pointer; }
 
 .programContainer {
-  width: 100%; }
+  width: 100%;
+  pointer-events: none; }
   .programContainer .hudController, .programContainer .hudPanel {
-    float: left; }
+    float: left;
+    pointer-events: auto; }
   .programContainer .hudController {
     width: 64px;
     height: 100%;
     background: #12171D;
     color: #283140;
-    z-index: 10; }
+    z-index: 10;
+    position: relative; }
     .programContainer .hudController .hudHeader {
       width: 100%;
       height: 64px; }
@@ -143,23 +146,24 @@ div {
     height: 100%;
     position: relative;
     margin-left: -168px;
-    transition: all 0.5s ease;
-    z-index: -1; }
+    transition: all 0.5s ease; }
     .programContainer .hudPanel.active {
       margin-left: 0px; }
     .programContainer .hudPanel .innerPanel {
       left: -168px;
-      z-index: -1;
       position: absolute;
       height: 100%;
       width: 100%;
       padding: 0px 15px;
-      transition: all 0.5s ease; }
+      transition: all 0.5s ease;
+      display: flex;
+      flex-direction: column; }
       .programContainer .hudPanel .innerPanel .panelHeader {
         height: 105px;
         padding: 3px;
         text-align: left;
-        position: relative; }
+        position: relative;
+        margin-bottom: 8px; }
         .programContainer .hudPanel .innerPanel .panelHeader .title {
           position: absolute;
           bottom: 2px;
@@ -168,20 +172,46 @@ div {
       .programContainer .hudPanel .innerPanel.active {
         left: 0; }
       .programContainer .hudPanel .innerPanel.connection {
-        background: #283140; }
+        background: #283140;
+        color: white; }
+        .programContainer .hudPanel .innerPanel.connection .field {
+          padding: 8px 0px; }
+          .programContainer .hudPanel .innerPanel.connection .field .fieldTitle {
+            padding: 2px 0px; }
+          .programContainer .hudPanel .innerPanel.connection .field input {
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            outline: 0;
+            border: 0;
+            height: 30px;
+            text-indent: 5px; }
+        .programContainer .hudPanel .innerPanel.connection .button {
+          display: inline-block;
+          padding: 6px 15px;
+          background: black;
+          cursor: pointer; }
       .programContainer .hudPanel .innerPanel.users {
         background: #CBCBCB; }
         .programContainer .hudPanel .innerPanel.users .userlist {
-          display: none; }
+          display: none;
+          height: 100%;
+          width: 100%;
+          overflow-y: scroll;
+          overflow-x: hidden;
+          margin-bottom: 5px; }
           .programContainer .hudPanel .innerPanel.users .userlist.active {
-            display: initial; }
+            display: block; }
+          .programContainer .hudPanel .innerPanel.users .userlist .user {
+            padding: 4px 2px; }
   .programContainer .mainContainer {
     position: relative;
     padding: 30px 18px 18px 18px;
     overflow: hidden;
     height: 100%;
     display: flex;
-    flex-direction: column; }
+    flex-direction: column;
+    pointer-events: auto; }
     .programContainer .mainContainer .chatSelection {
       height: 40px;
       width: 100%;
