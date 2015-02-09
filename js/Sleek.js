@@ -1,4 +1,4 @@
-﻿var Sleek = {};
+var Sleek = {};
 (function (self) {
 	self.irc = require('irc');
 
@@ -7,7 +7,7 @@
 	};
 	self.date = new Date();
 	self.profile = {
-		name: 'MR_IRC_TEST',
+		name: 'banjo29banger',
 		leavingMessage: "Goodbye!"
 	};
 	self.settings = {
