@@ -63,7 +63,11 @@
 
                     <div class="field">
                         <div class="fieldTitle">Username</div>
-                        <input type="text" ng-model="userName" ng-change="connection.changeUsername(userName)" />
+                        <input type="text" ui-keydown="{'enter':'connection.connect()'}" ng-model="userName" ng-change="connection.changeUsername(userName)" />
+                    </div>
+                    <div class="field">
+                        <div class="fieldTitle">Password</div>
+                        <input type="password" ui-keydown="{'enter':'connection.connect()'}" ng-model="passWord" ng-change="connection.setPassword(passWord)" />
                     </div>
                     <div class="button" ng-click="connection.connect()">Connect</div>
                 </div>
@@ -95,7 +99,7 @@
                 <div class="chatWindow" ng-repeat="chat in chats.getChats()" ng-class="{active: chat.isActive()}">
                     <div class="chatHeader">
                         <div class="title">{{chat.name}}</div>
-                        <div class="topic">{{chat.topic}}</div>
+                        <div class="topic" ng-bind-html="chat.topic | linkify"></div>
                     </div>
                     <div class="messageHistory">
                         <div class="message" ng-class="{self: message.senderSelf}" ng-repeat="message in chat.messages | orderBy:timestamp">

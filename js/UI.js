@@ -104,10 +104,14 @@
 				this.STATUS = STATUS;
 				this.changeUsername = function (username) {
 					Sleek.profile.name = username;
-					console.log(Sleek.profile.name +" "+ username)
+				};
+				this.setPassword = function (password) {
+					Sleek.profile.password = password;
 				};
 				this.connect = function () {
 					Sleek.client.opt.nick = Sleek.profile.name;
+					Sleek.client.opt.userName = Sleek.profile.name;
+					Sleek.client.opt.password = Sleek.profile.password;
 					Sleek.client.connect(function (e, r) {
 						if (e) {
 							Sleek.servers[0].status = STATUS.CONNECTED;
@@ -139,7 +143,7 @@
 						return;
 					}
 					var newChat = $scope.newChatName;
-					if (newChat.length <= 0) {
+					if (!newChat || newChat.length <= 0) {
 						return;
 					}
 					var chatExists = Sleek.getChatByName(newChat);

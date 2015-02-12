@@ -29,7 +29,7 @@ var Sleek = {};
 	};
 	self.getChatByName = function (name) {
 		return self.chats.first(function (chat) {
-			return chat.name == name;
+			return chat.name.toUpperCase() == name.toUpperCase();
 		});
 	};
 	self.currentChat = function () {
@@ -133,15 +133,26 @@ var Sleek = {};
 				channelPresent.changeTopic(topic);
 			}
 		});
-
+		self.client.addListener("names", function (channel, nicks) {
+			console.log("names called, " + channel, nicks)
+			var chan = Sleek.getChatByName(channel);
+			if (chan) {
+				chan.users = Object.keys(nicks);
+				chan.updateScope();
+			}
+		});
+		Sleek.client.addListener("message#", function (from, channel, message, msgOBJ) {
+			var chan = Sleek.getChatByName(channel);
+			if (chan) {
+				chan.receiveMessage(from, message);
+			}
+		});
 		if (self.FLAGS.DEBUG) {
 			self.client.addListener('message', function (from, to, message, msgOBJ) {
 				console.log('{0} => {1}: {2}'.format(from, to, message));
 				console.log(msgOBJ);
 			});
 		}
-
-
 	};
 
 	self.closeSequence = function (closecallback) {

@@ -57,5 +57,6 @@
 		var timestamp = Date.now();
 		this.messages.push(new Message(timestamp, sender, message, isSelf));
 		Sleek.addChatLog(this.id, timestamp, sender, message)
+		this.updateScope();
 	};
 })(Chat.prototype);
