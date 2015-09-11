@@ -1,0 +1,32 @@
+﻿@mixin flex-row {
+	display: flex;
+	flex-direction: row;
+}
+
+@mixin flex-column {
+	display: flex;
+	flex-direction: column;
+}
+
+@mixin full-height {
+	height: 100%;
+	box-sizing: border-box;
+}
+
+@mixin button-clickable($button-color) {
+	cursor: pointer;
+
+	&:hover, &.hover {
+		background-color: lighten($button-color, 10);
+	}
+
+	&:active, &.active {
+		background-color: darken($button-color, 10);
+	}
+}
+
+@mixin input-clear {
+	outline: none;
+	border: none;
+	padding: 0.2rem 0.5rem;
+}

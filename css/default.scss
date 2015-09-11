@@ -1,0 +1,181 @@
+﻿@import "palette";
+@import "mixins";
+
+*:not(input) {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+html, body {
+	height: 100%;
+	box-sizing: border-box;
+}
+
+#templates {
+	display: none;
+}
+
+#main-view {
+	@include full-height;
+	@include flex-row;
+
+	#control-bar {
+		@include full-height;
+		background-color: palette("blue", "dark");
+		color: palette("font", "blue");
+		max-width: 80px;
+		min-width: 40px;
+
+		.button {
+			@include button-clickable(palette("blue", "dark"));
+
+			&.selected {
+				background-color: palette("blue", "base");
+				@include button-clickable(palette("blue", "base"));
+			}
+
+			img {
+				width: 100%;
+			}
+		}
+	}
+
+	#control-options-view {
+		@include full-height;
+		min-width: 180px;
+		background-color: palette("blue", "base");
+		color: palette("white", "base");
+		padding: 4rem 0.6rem 0.6rem 0.6rem;
+	}
+
+	#chat-view {
+		@include full-height;
+		@include flex-column;
+
+		#tabs {
+			background-color: palette("red", "dark");
+			flex-basis: 40px;
+			@include flex-row;
+
+			#chats {
+				@include flex-row;
+				flex-grow: 1;
+				color: palette("font", "light");
+
+				.chat {
+					text-align: center;
+					padding: 0.8rem;
+					background-color: palette("red", "light");
+					@include button-clickable(palette("red", "light"));
+
+					&.selected {
+						font-weight: 600;
+					}
+				}
+			}
+
+			#search-box {
+				@include flex-row;
+				flex-basis: 300px;
+
+				input {
+					@include input-clear;
+					flex-grow: 1;
+					font-size: 2.5rem;
+					width: 100%;
+				}
+
+				#search {
+					@include button-clickable(palette("blue", "dark"));
+					background-color: palette("blue", "base");
+					color: palette("white", "base");
+					padding: 0.5rem;
+					flex-basis: 30px;
+
+					img {
+						width: 100%;
+						height: auto;
+					}
+				}
+			}
+		}
+
+		#container {
+			flex-grow: 1;
+			display: flex;
+			flex-direction: column;
+
+			.instance {
+				@include flex-column;
+				flex-grow: 1;
+
+				.server-info {
+					background-color: palette("red", "light");
+					padding: 0.6rem;
+					color: palette("font", "light");
+
+					.title {
+						color: palette("font", "yellow");
+						margin: 0;
+					}
+				}
+
+				.message-log {
+					flex-grow: 1;
+					flex-basis: 0;
+					color: palette("font", "dark");
+					padding: 0.3rem;
+					overflow-x: hidden;
+
+					.log {
+						@include flex-row;
+						padding: 1rem 0.1em;
+						box-sizing: border-box;
+
+						&:nth-child(2n) {
+							background-color: palette("green", "light");
+						}
+
+						.info {
+							min-width: 180px;
+							text-align: center;
+
+							.timestamp {
+								color: palette("font", "red");
+							}
+						}
+
+						.message {
+						}
+					}
+				}
+
+				.message-box {
+					@include flex-row;
+					padding: 0.3rem;
+					flex-basis: 40px;
+					box-sizing: border-box;
+
+					input {
+						@include input-clear;
+						flex-grow: 1;
+						background-color: palette("blue", "base");
+						color: palette("white", "base");
+						font-size: 2rem;
+					}
+
+					.submit {
+						@include button-clickable(palette("blue", "dark"));
+						background-color: palette("black", "dark");
+						color: palette("white", "base");
+						padding: 0.5rem;
+					}
+				}
+			}
+		}
+	}
+}
