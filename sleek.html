@@ -5,6 +5,11 @@
     <title>SleekIRC</title>
     <link rel="icon" type="image/png" href="images/favicon.png">
 
+    <!--         JS         -->
+    <script type="text/javascript">window.$ = window.jQuery = require('./libs/jquery-2.1.4.js');</script>
+    <script src="libs/ractive.min.js"></script>
+    <script src="libs/ractive-events-keys.js"></script>
+
     <!--        FONTS       -->
     <link href="css/raleway.css" rel="stylesheet" />
 
@@ -16,182 +21,105 @@
 <body>
     <div id="main-view">
         <div id="control-bar">
-            <div class="button">
-                <img src="images/icons/connect-control.png" />
-            </div>
-            <div class="button selected">
-                <img src="images/icons/connect-control.png" />
-            </div>
+
         </div>
         <div id="control-options-view">
-            <div id="connection" class="panel">
-                <h4>Connection Details</h4>
-            </div>
+
         </div>
         <div id="chat-view">
-            <div id="tabs">
-                <div id="chats">
-                    <div class="chat">
-                        Some Chat
-                    </div>
-                </div>
-                <div id="search-box">
-                    <input placeholder="Search..." />
-                    <div id="search">
-                        <img src="images/icons/search-button.png" />
-                    </div>
-                </div>
-            </div>
-            <div id="container">
-                <div class="instance">
-                    <div class="server-info">
-                        <h3 class="title">Some irc server title</h3>
-                        <div class="motd">oinhserviupbwevijbrvewrijbva</div>
-                    </div>
-                    <div class="message-log">
-                        <div class="log">
-                            <div class="info">
-                                <span class="timestamp">[00:12]</span>
-                                <span class="display-name">Chad Keating:</span>
-                            </div>
-                            <div class="message">
-                                I am a big fan of the Oath of Ancients, like the Green Knight of Arthurian legend. I really liked the flavour of Warden and Seeker primal classes in 4E and thought this was a good match for the Warden. However, it seems the new Ranger (guardian Archetype) is going to foot the bill now.
-                            </div>
-                        </div>
-                        <div class="log">
-                            <div class="info">
-                                <span class="timestamp">[00:12]</span>
-                                <span class="display-name">Chad Keating:</span>
-                            </div>
-                            <div class="message">
-                                I am a big fan of the Oath of Ancients, like the Green Knight of Arthurian legend. I really liked the flavour of Warden and Seeker primal classes in 4E and thought this was a good match for the Warden. However, it seems the new Ranger (guardian Archetype) is going to foot the bill now.
-                            </div>
-                        </div>
-                        <div class="log">
-                            <div class="info">
-                                <span class="timestamp">[00:12]</span>
-                                <span class="display-name">Chad Keating:</span>
-                            </div>
-                            <div class="message">
-                                I am a big fan of the Oath of Ancients, like the Green Knight of Arthurian legend. I really liked the flavour of Warden and Seeker primal classes in 4E and thought this was a good match for the Warden. However, it seems the new Ranger (guardian Archetype) is going to foot the bill now.
-                            </div>
-                        </div>
-                        <div class="log">
-                            <div class="info">
-                                <span class="timestamp">[00:12]</span>
-                                <span class="display-name">Chad Keating:</span>
-                            </div>
-                            <div class="message">
-                                I am a big fan of the Oath of Ancients, like the Green Knight of Arthurian legend. I really liked the flavour of Warden and Seeker primal classes in 4E and thought this was a good match for the Warden. However, it seems the new Ranger (guardian Archetype) is going to foot the bill now.
-                            </div>
-                        </div>
-                        <div class="log">
-                            <div class="info">
-                                <span class="timestamp">[00:12]</span>
-                                <span class="display-name">Chad Keating:</span>
-                            </div>
-                            <div class="message">
-                                I am a big fan of the Oath of Ancients, like the Green Knight of Arthurian legend. I really liked the flavour of Warden and Seeker primal classes in 4E and thought this was a good match for the Warden. However, it seems the new Ranger (guardian Archetype) is going to foot the bill now.
-                            </div>
-                        </div>
-                        <div class="log">
-                            <div class="info">
-                                <span class="timestamp">[00:12]</span>
-                                <span class="display-name">Chad Keating:</span>
-                            </div>
-                            <div class="message">
-                                I am a big fan of the Oath of Ancients, like the Green Knight of Arthurian legend. I really liked the flavour of Warden and Seeker primal classes in 4E and thought this was a good match for the Warden. However, it seems the new Ranger (guardian Archetype) is going to foot the bill now.
-                            </div>
-                        </div>
-                        <div class="log">
-                            <div class="info">
-                                <span class="timestamp">[00:12]</span>
-                                <span class="display-name">Chad Keating:</span>
-                            </div>
-                            <div class="message">
-                                I am a big fan of the Oath of Ancients, like the Green Knight of Arthurian legend. I really liked the flavour of Warden and Seeker primal classes in 4E and thought this was a good match for the Warden. However, it seems the new Ranger (guardian Archetype) is going to foot the bill now.
-                            </div>
-                        </div>
-                        <div class="log">
-                            <div class="info">
-                                <span class="timestamp">[00:12]</span>
-                                <span class="display-name">Chad Keating:</span>
-                            </div>
-                            <div class="message">
-                                I am a big fan of the Oath of Ancients, like the Green Knight of Arthurian legend. I really liked the flavour of Warden and Seeker primal classes in 4E and thought this was a good match for the Warden. However, it seems the new Ranger (guardian Archetype) is going to foot the bill now.
-                            </div>
-                        </div>
-                        <div class="log">
-                            <div class="info">
-                                <span class="timestamp">[00:12]</span>
-                                <span class="display-name">Chad Keating:</span>
-                            </div>
-                            <div class="message">
-                                I am a big fan of the Oath of Ancients, like the Green Knight of Arthurian legend. I really liked the flavour of Warden and Seeker primal classes in 4E and thought this was a good match for the Warden. However, it seems the new Ranger (guardian Archetype) is going to foot the bill now.
-                            </div>
-                        </div>
-                        <div class="log">
-                            <div class="info">
-                                <span class="timestamp">[00:12]</span>
-                                <span class="display-name">Chad Keating:</span>
-                            </div>
-                            <div class="message">
-                                I am a big fan of the Oath of Ancients, like the Green Knight of Arthurian legend. I really liked the flavour of Warden and Seeker primal classes in 4E and thought this was a good match for the Warden. However, it seems the new Ranger (guardian Archetype) is going to foot the bill now.
-                            </div>
-                        </div>
-                        <div class="log">
-                            <div class="info">
-                                <span class="timestamp">[00:12]</span>
-                                <span class="display-name">Chad Keating:</span>
-                            </div>
-                            <div class="message">
-                                I am a big fan of the Oath of Ancients, like the Green Knight of Arthurian legend. I really liked the flavour of Warden and Seeker primal classes in 4E and thought this was a good match for the Warden. However, it seems the new Ranger (guardian Archetype) is going to foot the bill now.
-                            </div>
-                        </div>
-                        <div class="log">
-                            <div class="info">
-                                <span class="timestamp">[00:12]</span>
-                                <span class="display-name">Chad Keating:</span>
-                            </div>
-                            <div class="message">
-                                I am a big fan of the Oath of Ancients, like the Green Knight of Arthurian legend. I really liked the flavour of Warden and Seeker primal classes in 4E and thought this was a good match for the Warden. However, it seems the new Ranger (guardian Archetype) is going to foot the bill now.
-                            </div>
-                        </div>
-                        <div class="log">
-                            <div class="info">
-                                <span class="timestamp">[00:12]</span>
-                                <span class="display-name">Chad Keating:</span>
-                            </div>
-                            <div class="message">
-                                I am a big fan of the Oath of Ancients, like the Green Knight of Arthurian legend. I really liked the flavour of Warden and Seeker primal classes in 4E and thought this was a good match for the Warden. However, it seems the new Ranger (guardian Archetype) is going to foot the bill now.
-                            </div>
-                        </div>
-                        <div class="log">
-                            <div class="info">
-                                <span class="timestamp">[00:12]</span>
-                                <span class="display-name">Chad Keating:</span>
-                            </div>
-                            <div class="message">
-                                I am a big fan of the Oath of Ancients, like the Green Knight of Arthurian legend. I really liked the flavour of Warden and Seeker primal classes in 4E and thought this was a good match for the Warden. However, it seems the new Ranger (guardian Archetype) is going to foot the bill now.
-                            </div>
-                        </div>
-                        <div class="log">
-                            <div class="info">
-                                <span class="timestamp">[00:12]</span>
-                                <span class="display-name">Chad Keating:</span>
-                            </div>
-                            <div class="message">
-                                I am a big fan of the Oath of Ancients, like the Green Knight of Arthurian legend. I really liked the flavour of Warden and Seeker primal classes in 4E and thought this was a good match for the Warden. However, it seems the new Ranger (guardian Archetype) is going to foot the bill now.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="message-box">
-                        <input placeholder="Type a message here" /><div class="submit">SEND</div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
-    <section id="templates"></section>
+    <section id="resources">
+        <section id="templates">
+            <script id="control-bar-buttons" type="text/ractive">
+                <div class="button" panel="connection" on-click="controlButtonClick">
+                    <img src="images/icons/connect-control.png" />
+                </div>
+
+                <div class="button" panel="server-log" on-click="controlButtonClick">
+                    <img src="images/icons/irc-log.png" />
+                </div>
+            </script>
+            <script id="control-view-panels" type="text/ractive">
+                <div id="connection" class="panel">
+                    <h5 class="freenode">Freenode: <span class='connection-status'>{{connection.connectionStatus}}</span></h5>
+                    <h4>Connection Details</h4>
+                    <div class="form">
+                        <input on-enter="connectionClick" id="channel-name" value="{{connection.channelbox}}" />
+                        <div id="connect" on-click="connectionClick" class="button">Connect</div>
+                    </div>
+                </div>
+                <div id="server-log" class="panel">
+                    <h4>Server Log</h4>
+
+                    <div id="server-log-text">
+                        {{#each serverLog.log}}
+                        <div class="log">
+                            <div class="info">
+                                <span class="timestamp selectable-text">{{timestamp}}</span>
+                                <span class="display-name selectable-text">{{sender}}:</span>
+                            </div>
+                            <div class="message selectable-text">{{{message}}}</div>
+                        </div>
+                        {{/each}}
+                    </div>
+                    <div id="server-command-input">
+                        <input on-enter="sendcommand:{{commandbox}}" value="{{commandbox}}" placeholder="Type a server command here..." />
+                        <div class="submit" on-click="sendcommand:{{commandbox}}">SEND</div>
+                    </div>
+                </div>
+            </script>
+            <script id='chat-view-template' type="text/ractive">
+                <div id="tabs">
+                    <div id="chats">
+                        {{#each chats}}
+                        <div class="chat" on-click="chatTabClicked">
+                            {{name}}
+                        </div>
+                        {{/each}}
+                    </div>
+                    <div id="search-box">
+                        <input placeholder="Search..." />
+                        <div id="search">
+                            <img src="images/icons/search-button.png" />
+                        </div>
+                    </div>
+                </div>
+                <div id="container">
+                    {{#each chats : c}}
+                    <div intro="fade" class="instance" instance="{{name}}">
+                        <div class="channel-info">
+                            <h3 class="title selectable-text">{{name}}</h3>
+                            <div class="topic selectable-text">{{#if topic}}{{topic}}{{else}}Private Message{{/if}}</div>
+                        </div>
+                        <div class="message-log">
+                            {{#each messages}}
+                            <div class="log{{#isSelf}} self{{/isSelf}}">
+                                <div class="info">
+                                    <span class="timestamp selectable-text">{{timestamp}}</span>
+                                    <span class="display-name selectable-text">{{sender}}:</span>
+                                </div>
+                                <div class="message selectable-text">{{message}}</div>
+                            </div>
+                            {{/each}}
+                        </div>
+                        <div class="message-box">
+                            <input on-enter="sendmessage:{{name}},{{messagebox}}" placeholder="Type a message here" value="{{messagebox}}" /><div class="submit" on-click="sendmessage:{{name}},{{messagebox}}">SEND</div>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+            </script>
+        </section>
+        <section id="scripts">
+            <script src="js/prototypes.js"></script>
+            <script src="js/objects/Message.js"></script>
+            <script src="js/objects/Chat.js"></script>
+            <script src="js/objects/Channel.js"></script>
+            <script src="js/ChatManager.js"></script>
+            <script src="js/UI.js"></script>
+            <script src="js/Sleek.js"></script>
+        </section>
+    </section>
 </body>
 </html>

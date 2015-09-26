@@ -2,17 +2,17 @@
 Error: $map: null is not a map for `map-get'
         on line 12 of C:/Users/Serenity/Documents/GitHub/SleekIRC/css/_palette.scss
 
-7: 	-khtml-user-select: none;
-8: 	-moz-user-select: none;
-9: 	-ms-user-select: none;
-10: 	user-select: none;
-11: }
-12: 
-13: html, body {
-14: 	height: 100%;
-15: 	box-sizing: border-box;
-16: }
-17: 
+7: 	-moz-user-select: none;
+8: 	-ms-user-select: none;
+9: 	user-select: none;
+10: }
+11: 
+12: html, body {
+13: 	height: 100%;
+14: 	box-sizing: border-box;
+15: }
+16: 
+17: #resources {
 
 Backtrace:
 C:/Users/Serenity/Documents/GitHub/SleekIRC/css/_palette.scss:12
@@ -91,4 +91,4 @@ C:/Program Files (x86)/Koala/bin/sass:18:in `<main>'
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: $map: null is not a map for `map-get'\A         on line 12 of C:/Users/Serenity/Documents/GitHub/SleekIRC/css/_palette.scss\A \A 7: 	-khtml-user-select: none;\A 8: 	-moz-user-select: none;\A 9: 	-ms-user-select: none;\A 10: 	user-select: none;\A 11: }\A 12: \A 13: html, body {\A 14: 	height: 100%;\A 15: 	box-sizing: border-box;\A 16: }\A 17: "; }
+  content: "Error: $map: null is not a map for `map-get'\A         on line 12 of C:/Users/Serenity/Documents/GitHub/SleekIRC/css/_palette.scss\A \A 7: 	-moz-user-select: none;\A 8: 	-ms-user-select: none;\A 9: 	user-select: none;\A 10: }\A 11: \A 12: html, body {\A 13: 	height: 100%;\A 14: 	box-sizing: border-box;\A 15: }\A 16: \A 17: #resources {"; }

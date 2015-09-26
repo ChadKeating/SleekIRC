@@ -126,7 +126,6 @@
 			}
 			chatPresent.receiveMessage(text);
 		});
-
 		self.client.addListener('topic', function (channel, topic, nick, message) {
 			var channelPresent = self.getChatByName(channel);
 			if (channelPresent) {
@@ -159,7 +158,7 @@
 		//Disconnect all chats
 		//Disconnect server
 		//return;
-		self.client.disconnect(self.profile.leavingMessage, function(){
+		self.client.disconnect(self.profile.leavingMessage, function () {
 			self.db.commit();
 			if (closecallback) {
 				closecallback();
@@ -168,6 +167,3 @@
 	};
 
 })(Sleek);
-$(document).ready(function () {
-	Sleek.init();
-});

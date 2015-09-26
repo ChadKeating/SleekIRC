@@ -14,7 +14,9 @@
 }
 
 @mixin button-clickable($button-color) {
+	&, & > *{
 	cursor: pointer;
+	}
 
 	&:hover, &.hover {
 		background-color: lighten($button-color, 10);
@@ -28,5 +30,17 @@
 @mixin input-clear {
 	outline: none;
 	border: none;
+	box-sizing: border-box;
 	padding: 0.2rem 0.5rem;
+}
+
+@mixin input-dark {
+	background-color: palette("blue", "base");
+	color: palette("white", "base");
+}
+
+
+@mixin input-light {
+	background-color: palette("white", "base");
+	color: palette("black", "dark");
 }

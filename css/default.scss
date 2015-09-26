@@ -1,13 +1,13 @@
 ﻿@import "palette";
 @import "mixins";
 
-*:not(input) {
+*:not(input):not(.selectable-text) {
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
-	-khtml-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+	cursor: default;
 }
 
 html, body {
@@ -15,8 +15,18 @@ html, body {
 	box-sizing: border-box;
 }
 
-#templates {
+#resources {
 	display: none;
+}
+
+.selectable-text {
+	-webkit-touch-callout: initial;
+	-webkit-user-select: text;
+	-moz-user-select: text;
+	-ms-user-select: text;
+	user-select: text;
+	user-select: text;
+	cursor: text;
 }
 
 #main-view {
@@ -27,15 +37,16 @@ html, body {
 		@include full-height;
 		background-color: palette("blue", "dark");
 		color: palette("font", "blue");
-		max-width: 80px;
-		min-width: 40px;
+		max-width: 70px;
+		min-width: 35px;
 
 		.button {
 			@include button-clickable(palette("blue", "dark"));
 
 			&.selected {
-				background-color: palette("blue", "base");
-				@include button-clickable(palette("blue", "base"));
+				&, &:hover, &:active {
+					background-color: palette("blue", "base");
+				}
 			}
 
 			img {
@@ -50,11 +61,90 @@ html, body {
 		background-color: palette("blue", "base");
 		color: palette("white", "base");
 		padding: 4rem 0.6rem 0.6rem 0.6rem;
+
+		.panel {
+			display: none;
+			width: 280px;
+			overflow: hidden;
+			height: 100%;
+
+			&.active {
+				@include flex-column;
+			}
+		}
+
+		#connection {
+			.form {
+
+				#channel-name {
+					@include input-clear;
+					color: palette("font", "dark");
+					width: 100%;
+					height: 3rem;
+					font-size: 2rem;
+				}
+
+				#connect {
+					background-color: palette("green", "light");
+					@include button-clickable(palette("green", "light"));
+					color: palette("font", "dark");
+					display: inline-block;
+					padding: 0.5rem 1rem;
+					text-align: center;
+				}
+			}
+		}
+
+		#server-log {
+			#server-log-text {
+				background-color: palette("white", "base");
+				color: palette("black", "dark");
+				padding: 2px 8px;
+				height: 100%;
+				overflow-y: auto;
+				font-size: 1.1rem;
+
+				.log {
+					border-bottom: 1px solid palette("black", "dark");
+
+					&:last-child {
+						border: none;
+					}
+
+					.timestamp, .display-name {
+						color: palette("blue", "dark");
+						font-weight: 600;
+					}
+
+					.message {
+						word-wrap: break-word;
+					}
+				}
+			}
+
+			#server-command-input {
+				@include flex-row;
+				input {
+					@include input-clear;
+					@include input-dark;
+					padding: 0.3rem 0.5rem;
+					flex-grow: 1;
+				}
+
+				.submit{
+					@include button-clickable(palette("blue", "dark"));
+						background-color: palette("black", "dark");
+						color: palette("white", "base");
+						padding: 0.5rem;
+				}
+			}
+		}
 	}
 
 	#chat-view {
 		@include full-height;
 		@include flex-column;
+		flex-grow: 1;
 
 		#tabs {
 			background-color: palette("red", "dark");
@@ -84,6 +174,7 @@ html, body {
 
 				input {
 					@include input-clear;
+					@include input-light;
 					flex-grow: 1;
 					font-size: 2.5rem;
 					width: 100%;
@@ -110,10 +201,14 @@ html, body {
 			flex-direction: column;
 
 			.instance {
-				@include flex-column;
 				flex-grow: 1;
+				display: none;
 
-				.server-info {
+				&.active {
+					@include flex-column;
+				}
+
+				.channel-info {
 					background-color: palette("red", "light");
 					padding: 0.6rem;
 					color: palette("font", "light");
@@ -133,11 +228,16 @@ html, body {
 
 					.log {
 						@include flex-row;
-						padding: 1rem 0.1em;
+						padding: 0.55rem 0.1em;
 						box-sizing: border-box;
+						margin-top: 4px;
 
-						&:nth-child(2n) {
-							background-color: palette("green", "light");
+						&:not(.self) {
+							background-color: palette("white", "blue");
+						}
+
+						&:first-child {
+							margin-top: 0px;
 						}
 
 						.info {
@@ -150,6 +250,7 @@ html, body {
 						}
 
 						.message {
+							word-wrap: break-word;
 						}
 					}
 				}
@@ -162,9 +263,8 @@ html, body {
 
 					input {
 						@include input-clear;
+						@include input-dark;
 						flex-grow: 1;
-						background-color: palette("blue", "base");
-						color: palette("white", "base");
 						font-size: 2rem;
 					}
 
