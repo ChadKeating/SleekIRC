@@ -22,10 +22,6 @@
 		chatView: null
 	};
 
-	self.connectedToServer = function () {
-		this.ractives.controlPanel.set("connectionStatus", "Connected");
-	};
-
 	self.bindControlBar = function () {
 		var that = this;
 
@@ -43,8 +39,6 @@
 			that.setActiveControlPanel(panel);
 		});
 	};
-
-
 
 	self.setActiveControlPanel = function (panel) {
 		var buttons$ = $(this.ractives.controlBar.findAll(".button")).removeClass("selected");
@@ -87,6 +81,10 @@
 			Sleek.sendServerCommand(message);
 			$(event.node).parent().find("input").val("").focus();
 		});
+	};
+
+	self.connectedToServer = function () {
+		this.ractives.controlPanel.set("connection.connectionStatus", "Connected");
 	};
 
 	self.addServerLog = function (sender, message) {

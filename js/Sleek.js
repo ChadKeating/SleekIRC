@@ -142,9 +142,8 @@
 
 			if (message.args[0] == that.profile.username) {
 				that.logToClient(message.prefix, message.args.splice(1).join("<br/>"));
-
 			}
-			that.logObject(message);
+			//that.logObject(message);
 		});
 
 		self.sendServerCommand = function (message) {
