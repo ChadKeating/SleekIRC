@@ -10,22 +10,21 @@ String.prototype.generateId = function (delim) {
 	});
 	return this + uuid;
 };
+
 String.prototype.format = function () {
 	http://stackoverflow.com/questions/1038746/equivalent-of-string-format-in-jquery
-	var s = this,
-        i = arguments.length;
+		var s = this,
+			i = arguments.length;
 	while (i--) {
 		s = s.replace(new RegExp('\\{' + i + '\\}', 'gm'), arguments[i]);
 	}
 	return s;
 };
 
-
 /**** Number ****/
 Number.prototype.clamp = function (min, max) {
 	return Math.min(Math.max(this, min), max);
 };
-
 
 /**** Array ****/
 Array.prototype.copy = function () {
@@ -50,3 +49,4 @@ Array.prototype.first = function (filter) {
 	}
 	return null;
 };
+

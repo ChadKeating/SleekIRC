@@ -1,0 +1,13 @@
+﻿$palettes: ( 
+	font: ( dark: #575D69, light:#FFFFFF, blue: #A7C8FE, yellow: #FFEDC5, red: #D43B3D ), 
+	white: ( base: #FFFFFF, blue: #ebecf5), 
+	blue:( dark: #12171D, base: #283140), 
+	black:( dark: #000000 ), 
+	green:( light: #D3FFA8 ), 
+	red: ( dark: #C5393A, base: #D43B3D, light: #FF5454 ), 
+	highlight: ( low: rgba(255, 255, 255, 0.3) ) 
+);
+
+@function palette($palette, $tone: 'base') {
+	@return map-get(map-get($palettes, $palette), $tone);
+}

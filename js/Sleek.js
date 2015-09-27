@@ -2,110 +2,55 @@
 (function (self) {
 	self.irc = require('irc');
 
+	self.client = null;
+
+	self.cm = ChatManager;
+
 	self.FLAGS = {
 		DEBUG: true
 	};
-	self.date = new Date();
-	self.profile = {
-		name: 'MR_IRC_TEST',
-		leavingMessage: "Goodbye!"
-	};
-	self.settings = {
-		useMaxNotifications: true,
-		maxNotifications: 10
-	};
 
-	self.servers = [{
+	self.server = {
 		name: "Freenode",
 		address: "irc.freenode.com",
-		status: STATUS.NOTCONNECTED
-	}];
-
-	self.chats = [];
-	self.getChatById = function (id) {
-		return self.chats.first(function (chat) {
-			return chat.id == id;
-		});
-	};
-	self.getChatByName = function (name) {
-		return self.chats.first(function (chat) {
-			return chat.name.toUpperCase() == name.toUpperCase();
-		});
-	};
-	self.currentChat = function () {
-		return self.chats.first(function (chat) {
-			return chat.isActive();
-		});
-	};
-	self.changeChat = function (chat) {
-		self.chats.forEach(function (e) {
-			if (e.id == chat) {
-				e.makeActive();
-			} else {
-				e.makeInactive();
-			}
-		});
+		connected: false
 	};
 
-	/* Database stuff */
-	self.db = null;
-	function setupDatabase() {
-		self.db = new localStorageDB("sleekDB", localStorage);
-		if (self.FLAGS.DEBUG) {
-			self.db.drop();
-			self.db = new localStorageDB("sleekDB", localStorage);
-		}
-		if (self.db.isNew()) {
-			self.db.createTableWithData("settings", [self.settings]);
-			self.db.createTableWithData("servers", self.servers);
-			self.db.createTable("profiles", ["id", "name", "leavingMessage"]);
-			self.db.createTable("channels", ["id", "name", "topic"]);
-			self.db.createTable("privates", ["id", "name"]);
-		}
+	self.profile = {
+		username: "Mr_Sleek"
 	}
-	function resetDatabase(hardreset) {
-		if (hardreset) {
-			self.db.drop();
-			setupDatabase();
-			/*
-			self.db.truncate("settings")
-			self.db.truncate("servers")
-			self.db.truncate("profiles")
-			self.db.truncate("channels")
-			self.db.truncate("privates")
-			*/
-		}
+
+	self.logObject = function (obj) {
+		console.dir(obj);
+	};
+
+	self.logToClient = function (sender, message) {
+		UI.addServerLog(sender, message);
+	};
+
+	self.logInfo = function (message) {
+		sendConsoleLog("INFO", message);
+	};
+
+	self.logWarning = function (message) {
+		sendConsoleLog("WARNING", message);
+	};
+
+	self.logError = function (message) {
+		sendConsoleLog("ERROR", message);
+	};
+
+	function sendConsoleLog(level, message) {
+		console.log("[{0}] {1}".format(level, message));
 	}
-	self.setupChatLog = function (chat) {
-		var table = chat.id;
-		if (chat.type == "CHANNEL") {
-			if (!(self.db.query("channels", { name: chat.name }, 1).length > 0)) {
-				self.db.insert("channels", { id: chat.id, name: chat.name, topic: chat.topic });
-			}
-		} else {
-			if (!(self.db.query("privates", { name: chat.name }, 1).length > 0)) {
-				self.db.insert("privates", { id: chat.id, name: chat.name });
-			}
-		}
-		if (!self.db.tableExists(table)) {
-			self.db.createTable(table, ["timestamp", "sender", "message"]);
-		}
-	};
-
-	self.addChatLog = function (chatid, time, sender, message) {
-		self.db.insert(chatid, {
-			timestamp: time,
-			sender: sender,
-			message: message
-		});
-	};
-
-	/*		*/
 
 	self.init = function () {
-		setupDatabase();
+		Ractive.DEBUG = this.FLAGS.DEBUG;
+
 		UI.init();
-		self.client = new self.irc.Client(self.servers[0].address, self.profile.name, {
+
+		//connect to freenode
+		this.client = new this.irc.Client(this.server.address, this.profile.username, {
 			autoRejoin: false,
 			autoConnect: false,
 			channels: [],
@@ -114,60 +59,130 @@
 			sasl: false,
 			stripColors: false
 		});
-		self.client.addListener('error', function (message) {
-			console.log("Error: ", message);
-		});
-		self.client.addListener('pm', function (name, text, message) {
-			var chatPresent = self.getChatByName(name);
-			if (!chatPresent) {
-				chatPresent = new Private(name);
-				chatPresent.chatJoined(true);
-				self.chats.push(chatPresent);
-			}
-			chatPresent.receiveMessage(text);
-		});
 
-		self.client.addListener('topic', function (channel, topic, nick, message) {
-			var channelPresent = self.getChatByName(channel);
-			if (channelPresent) {
-				channelPresent.changeTopic(topic);
-			}
-		});
-		self.client.addListener("names", function (channel, nicks) {
-			console.log("names called, " + channel, nicks)
-			var chan = Sleek.getChatByName(channel);
-			if (chan) {
-				chan.users = Object.keys(nicks);
-				chan.updateScope();
-			}
-		});
-		Sleek.client.addListener("message#", function (from, channel, message, msgOBJ) {
-			var chan = Sleek.getChatByName(channel);
-			if (chan) {
-				chan.receiveMessage(from, message);
-			}
-		});
-		if (self.FLAGS.DEBUG) {
-			self.client.addListener('message', function (from, to, message, msgOBJ) {
-				console.log('{0} => {1}: {2}'.format(from, to, message));
-				console.log(msgOBJ);
-			});
-		}
+		this._bindIRCListeners();
+
+		this.client.connect();
+
+		window.onbeforeunload = function (e) {
+			Sleek.onClose();
+		};
+
+
+		Sleek.logInfo("Sleek Finished");
 	};
 
-	self.closeSequence = function (closecallback) {
+	self._bindIRCListeners = function () {
+		var that = this;
+
+		this.client.addListener('registered', function (server) {
+			that.logInfo("Registered");
+			console.dir(server);
+			that.server.connected = true;
+			UI.connectedToServer();
+		});
+
+		this.client.addListener('ping', function (server) {
+			sendConsoleLog("PING", server);
+		});
+
+		this.client.addListener('error', function (message) {
+			that.logToClient("server", "There was an error. See console for details.");
+			that.logObject(message);
+		});
+
+		this.client.addListener('pm', function (name, text, message) {
+			that.logInfo("pm: {0}; {1}; {2};".format(name, text, message));
+		});
+
+		this.client.addListener('topic', function (channel, topic, nick, message) {
+			Sleek.cm.setChannelTopic(channel, topic);
+		});
+
+		this.client.addListener("names", function (channel, nicks) {
+			that.logInfo("names of: {0}".format(channel));
+			that.logObject(nicks);
+		});
+
+		this.client.addListener("message#", function (from, channel, message, msgOBJ) {
+			that.logInfo('message#: {0} => {1}: {2}'.format(from, channel, message));
+			that.logObject(msgOBJ);
+			that.cm.messageRecieved(channel, new Message("0000", from, message, false)); //Pipe to correct channel via chat manager
+		});
+
+		this.client.addListener('message', function (from, to, message, msgOBJ) {
+			that.logInfo('message: {0} => {1}: {2}'.format(from, to, message));
+			that.logObject(msgOBJ);
+		});
+
+		this.client.addListener('raw', function (message) {
+			/*
+							0: "Mr_Sleek"
+				1: "CASEMAPPING=rfc1459"
+				2: "CHARSET=ascii"
+				3: "NICKLEN=16"
+				4: "CHANNELLEN=50"
+				5: "TOPICLEN=390"
+				6: "ETRACE"
+				7: "CPRIVMSG"
+				8: "CNOTICE"
+				9: "DEAF=D"
+				10: "MONITOR=100"
+				11: "FNC"
+				12: "TARGMAX=NAMES:1,LIST:1,KICK:1,WHOIS:1,PRIVMSG:4,NOTICE:4,ACCEPT:,MONITOR:"
+				13: "are supported by this server"
+				length: 14
+				__proto__: Array[0]
+				command: "rpl_isupport"
+				commandType: "reply"
+				prefix: "leguin.freenode.net"
+				rawCommand: "005"
+				server: "leguin.freenode.net"
+			*/
+
+			if (message.args[0] == that.profile.username) {
+				that.logToClient(message.prefix, message.args.splice(1).join("<br/>"));
+
+			}
+			that.logObject(message);
+		});
+
+		self.sendServerCommand = function (message) {
+			if (message[0] == "/") {
+				var args = message.slice(1).split("\\s+");
+				switch (args.length) {
+					case 1:
+						this.client.send(args[0].toUpperCase());
+						break;
+					case 2:
+						this.client.send(args[0].toUpperCase(), args[1]);
+						break;
+					case 3:
+						this.client.send(args[0].toUpperCase(), args[1], args[2]);
+						break;
+					case 4:
+						this.client.send(args[0].toUpperCase(), args[1], args[2], args[3]);
+						break;
+					default:
+						break;
+				}
+
+			} else {
+				this.logToClient("Sleek", "That is not a valid command.");
+			}
+		};
+
+
+	};
+
+	self.onClose = function (closecallback) {
 		//Disconnect all chats
 		//Disconnect server
-		//return;
-		self.client.disconnect(self.profile.leavingMessage, function(){
-			self.db.commit();
-			if (closecallback) {
-				closecallback();
-			}
-		});
+		this.client.disconnect("Bye! - SleekIRC");
 	};
 
 })(Sleek);
+
 $(document).ready(function () {
 	Sleek.init();
 });

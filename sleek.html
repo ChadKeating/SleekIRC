@@ -1,119 +1,125 @@
 ﻿<!DOCTYPE html>
-<html ng-app="sleek">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <title>SleekIRC</title>
-    <link rel="stylesheet" href="./css/default.css" />
+    <link rel="icon" type="image/png" href="images/favicon.png">
 
-    <link rel="stylesheet" href="./libs/font-awesome-4.3.0/css/font-awesome.min.css" />
+    <!--         JS         -->
+    <script type="text/javascript">window.$ = window.jQuery = require('./libs/jquery-2.1.4.js');</script>
+    <script src="libs/ractive.min.js"></script>
+    <script src="libs/ractive-events-keys.js"></script>
 
-    <script type="text/javascript" src="./libs/jquery-2.1.3.min.js"></script>
-    <script type="text/javascript" src="./libs/angular.min.js"></script>
-    <script type="text/javascript" src="./libs/angular-sanitize.js"></script>
-    <script type="text/javascript" src="./libs/angular-ui-utils.min.js"></script>
+    <!--        FONTS       -->
+    <link href="css/raleway.css" rel="stylesheet" />
 
-    <script type="text/javascript" src="./libs/jquery.linkify.min.js"></script>
-    <script type="text/javascript" src="./libs/localstoragedb.min.js"></script>
-
-
-    <script type="text/javascript" src="./js/prototypes.js"></script>
-    <script type="text/javascript" src="./js/ENUMS.js"></script>
-
-    <script type="text/javascript" src="./js/Objects/Message.js"></script>
-    <script type="text/javascript" src="./js/Objects/Chat.js"></script>
-    <script type="text/javascript" src="./js/Objects/Channel.js"></script>
-    <script type="text/javascript" src="./js/Objects/Private.js"></script>
-
-    <script type="text/javascript" src="./js/Sleek.js"></script>
-    <script type="text/javascript" src="./js/UI.js"></script>
+    <!--         CSS        -->
+    <link href="css/normalize.css" rel="stylesheet" />
+    <link href="css/skeleton.css" rel="stylesheet" />
+    <link href="css/default.min.css" rel="stylesheet" />
 </head>
 <body>
-    <div class="handleBar" handle-controller>
-        <div class="close fa fa-times" ng-click="handle.close()"></div>
-        <div class="maximize fa fa-square-o" ng-click="handle.maximize()"></div>
-        <div class="minimize fa fa-minus" ng-click="handle.minimize()"></div>
-    </div>
-    <div class="programContainer" hud-controller chats-controller>
-        <div class="hudController">
-            <div class="hudHeader"></div>
-            <div class="hudButton connection" ng-click="hud.setPanel('connection')" ng-class="{active: hud.isPanel('connection')}">
-                <i class="fa fa-refresh"></i>
-            </div>
-            <div class="hudButton users" ng-click="hud.setPanel('users')" ng-class="{active: hud.isPanel('users')}">
-                <i class="fa fa-users"></i>
-            </div>
-            <div class="hudButton">
-                <i class="fa fa-square"></i>
-            </div>
+    <div id="main-view">
+        <div id="control-bar">
+
         </div>
-        <div class="hudPanel" ng-class="{active: !hud.isPanel('noSelection')}">
-            <div class="innerPanel connection" connection-controller ng-class="{active: hud.isPanel('connection')}">
-                <div class="panelHeader">
-                    <div class="title">Connection Details</div>
-                </div>
-                <div class="connectionForm">
-                    <div class="field">
-                        <div class="fieldTitle">
-                            Freenode Status:
-                            <span ng-show="connection.getServers()[0].status === connection.STATUS.CONNECTED">CONNECTED</span>
+        <div id="control-options-view">
 
-                            <span ng-show="connection.getServers()[0].status === connection.STATUS.NOTCONNECTED">NOT CONNECTED</span>
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <div class="fieldTitle">Username</div>
-                        <input type="text" ui-keydown="{'enter':'connection.connect()'}" ng-model="userName" ng-change="connection.changeUsername(userName)" />
-                    </div>
-                    <div class="field">
-                        <div class="fieldTitle">Password</div>
-                        <input type="password" ui-keydown="{'enter':'connection.connect()'}" ng-model="passWord" ng-change="connection.setPassword(passWord)" />
-                    </div>
-                    <div class="button" ng-click="connection.connect()">Connect</div>
-                </div>
-            </div>
-            <div class="innerPanel users" ng-class="{active: hud.isPanel('users')}">
-                <div class="panelHeader">
-                    <div class="title">Users</div>
-                </div>
-                <div class="userlist" ng-class="{active: chat.isActive()}" ng-repeat="chat in chats.getChats()">
-                    <div class="user" ng-repeat="user in chat.users">{{user}}</div>
-                </div>
-            </div>
         </div>
-
-        <div class="mainContainer">
-            <div class="chatSelection">
-                <div class="chatButtons">
-                    <div class="chatButton" ng-click="chat.focusChat()" ng-repeat="chat in chats.getChats()" ng-class="{active: chat.isActive()}">{{chat.name}}</div>
-                </div>
-                <div class="connectTo">
-                    <div class="input"><input type="text" ng-model="newChatName" ui-keydown="{'enter':'chats.join(newChatName)'}" placeholder="Channel / User" autofocus /></div>
-                    <div class="button" ng-click="chats.join(newChatName)">
-                        <i class="fa fa-long-arrow-right"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="chatsContainer">
-                <div class="noChats" ng-class="{hidden: chats.getChats().length > 0}">No Chats!</div>
-                <div class="chatWindow" ng-repeat="chat in chats.getChats()" ng-class="{active: chat.isActive()}">
-                    <div class="chatHeader">
-                        <div class="title">{{chat.name}}</div>
-                        <div class="topic" ng-bind-html="chat.topic | linkify"></div>
-                    </div>
-                    <div class="messageHistory">
-                        <div class="message" ng-class="{self: message.senderSelf}" ng-repeat="message in chat.messages | orderBy:timestamp">
-                            <div class="sender"><span class="time">[{{message.timestamp | date : 'HH:mm'}}] </span>{{message.sender}}: </div>
-                            <div class="text" ng-bind-html="message.message | linkify"></div>
-                        </div>
-                        <div class="messageBox">
-                            <div class="input"><input type="text" ng-model="SendMessage[chat.id]" ui-keydown="{'enter':'chat.sendMessage(SendMessage[chat.id])'}" ng-focus="chat.active" /></div>
-                            <div class="button" ng-click="chat.sendMessage(SendMessage[chat.id])">Send</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div id="chat-view">
         </div>
     </div>
+    <section id="resources">
+        <section id="templates">
+            <script id="control-bar-buttons" type="text/ractive">
+                <div class="button" panel="connection" on-click="controlButtonClick">
+                    <img src="images/icons/connect-control.png" />
+                </div>
+
+                <div class="button" panel="server-log" on-click="controlButtonClick">
+                    <img src="images/icons/irc-log.png" />
+                </div>
+            </script>
+            <script id="control-view-panels" type="text/ractive">
+                <div id="connection" class="panel">
+                    <h5 class="freenode">Freenode: <span class='connection-status'>{{connection.connectionStatus}}</span></h5>
+                    <h4>Connection Details</h4>
+                    <div class="form">
+                        <input on-enter="connectionClick" id="channel-name" value="{{connection.channelbox}}" />
+                        <div id="connect" on-click="connectionClick" class="button">Connect</div>
+                    </div>
+                </div>
+                <div id="server-log" class="panel">
+                    <h4>Server Log</h4>
+
+                    <div id="server-log-text">
+                        {{#each serverLog.log}}
+                        <div class="log">
+                            <div class="info">
+                                <span class="timestamp selectable-text">{{timestamp}}</span>
+                                <span class="display-name selectable-text">{{sender}}:</span>
+                            </div>
+                            <div class="message selectable-text">{{{message}}}</div>
+                        </div>
+                        {{/each}}
+                    </div>
+                    <div id="server-command-input">
+                        <input on-enter="sendcommand:{{commandbox}}" value="{{commandbox}}" placeholder="Type a server command here..." />
+                        <div class="submit" on-click="sendcommand:{{commandbox}}">SEND</div>
+                    </div>
+                </div>
+            </script>
+            <script id='chat-view-template' type="text/ractive">
+                <div id="tabs">
+                    <div id="chats">
+                        {{#each chats}}
+                        <div class="chat" on-click="chatTabClicked">
+                            {{name}}
+                        </div>
+                        {{/each}}
+                    </div>
+                    <div id="search-box">
+                        <input placeholder="Search..." />
+                        <div id="search">
+                            <img src="images/icons/search-button.png" />
+                        </div>
+                    </div>
+                </div>
+                <div id="container">
+                    {{#each chats : c}}
+                    <div intro="fade" class="instance" instance="{{name}}">
+                        <div class="channel-info">
+                            <h3 class="title selectable-text">{{name}}</h3>
+                            <div class="topic selectable-text">{{#if topic}}{{topic}}{{else}}Private Message{{/if}}</div>
+                        </div>
+                        <div class="message-log">
+                            {{#each messages}}
+                            <div class="log{{#isSelf}} self{{/isSelf}}">
+                                <div class="info">
+                                    <span class="timestamp selectable-text">{{timestamp}}</span>
+                                    <span class="display-name selectable-text">{{sender}}:</span>
+                                </div>
+                                <div class="message selectable-text">{{message}}</div>
+                            </div>
+                            {{/each}}
+                        </div>
+                        <div class="message-box">
+                            <input on-enter="sendmessage:{{name}},{{messagebox}}" placeholder="Type a message here" value="{{messagebox}}" /><div class="submit" on-click="sendmessage:{{name}},{{messagebox}}">SEND</div>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+            </script>
+        </section>
+        <section id="scripts">
+            <script src="js/prototypes.js"></script>
+            <script src="js/objects/Message.js"></script>
+            <script src="js/objects/Chat.js"></script>
+            <script src="js/objects/Channel.js"></script>
+            <script src="js/ChatManager.js"></script>
+            <script src="js/UI.js"></script>
+            <script src="js/Sleek.js"></script>
+        </section>
+    </section>
 </body>
 </html>
